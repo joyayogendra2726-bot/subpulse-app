@@ -1,0 +1,15 @@
+{
+  "name": "SubPulse: EMI & Bill Tracker",
+  "short_name": "SubPulse",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#090D16",
+  "theme_color": "#090D16",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

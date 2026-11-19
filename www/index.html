@@ -1,1 +1,2116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>SubPulse: EMI &amp; Bill Tracker</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#090D16" />
+  <style>
+    :root {
+      --bg: #090D16;
+      --surface: #111827;
+      --surface-2: #1A2333;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #F8FAFC;
+      --muted: #94A3B8;
+      --emerald: #10B981;
+      --emerald-dim: rgba(16, 185, 129, 0.16);
+      --accent-2: #38BDF8;
+      --accent-text: #052E21;
+      --hero-bg: linear-gradient(180deg, #131C2E 0%, #0F172A 100%);
+      --amber: #F59E0B;
+      --amber-dim: rgba(245, 158, 11, 0.15);
+      --coral: #EF4444;
+      --coral-dim: rgba(239, 68, 68, 0.15);
+      --sky: #38BDF8;
+      --sky-dim: rgba(56, 189, 248, 0.15);
+      --violet: #A78BFA;
+      --radius: 16px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-size: 15px;
+      line-height: 1.45;
+      overflow-x: hidden;
+      min-height: 100dvh;
+    }
+
+    /* Attractive Animated Splash Screen */
+    .splash-screen {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 35%, var(--emerald-dim), #060911 72%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 120;
+      padding: 24px;
+      text-align: center;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
+    }
+
+    .splash-screen.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-ring {
+      width: 96px;
+      height: 96px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, var(--emerald), var(--accent-2));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 40px var(--emerald-dim);
+      animation: pulseGlow 1.6s ease-in-out infinite;
+      margin-bottom: 18px;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 24px var(--emerald-dim); }
+      50% { transform: scale(1.06); box-shadow: 0 0 48px var(--emerald); }
+    }
+
+    .splash-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #FFFFFF;
+    }
+
+    .splash-sub {
+      font-size: 14px;
+      color: #94A3B8;
+      margin-top: 6px;
+      max-width: 280px;
+    }
+
+    .splash-bar {
+      width: 140px;
+      height: 4px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 22px;
+    }
+
+    .splash-fill {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--emerald), var(--accent-2));
+      animation: loadBar 1.5s ease-out forwards;
+      transform-origin: left;
+    }
+
+    @keyframes loadBar {
+      from { transform: scaleX(0.05); }
+      to { transform: scaleX(1); }
+    }
+
+    .splash-skip {
+      margin-top: 18px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #F8FAFC;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .app-shell {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: calc(12px + var(--safe-top)) 14px calc(96px + var(--safe-bottom));
+    }
+
+    /* Responsive Topbar - Never Clips or Overlaps on 360px Mobile */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--emerald), var(--accent-2));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 16px var(--emerald-dim);
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+
+    .currency-select {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 88px;
+    }
+
+    .pro-pill {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), var(--emerald-dim));
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #FCD34D;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .pro-pill.active-pro {
+      background: var(--emerald-dim);
+      border-color: var(--emerald);
+      color: var(--emerald);
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px;
+      margin-bottom: 14px;
+    }
+
+    .hero-card {
+      background: radial-gradient(circle at top right, var(--emerald-dim), transparent 58%), var(--hero-bg);
+      border: 1px solid var(--emerald);
+    }
+
+    .hero-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .hero-amount {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 4px 0;
+      color: var(--text);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .hero-meta strong {
+      color: var(--emerald);
+    }
+
+    .budget-bar-wrap {
+      margin-top: 14px;
+    }
+
+    .budget-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .budget-track {
+      height: 8px;
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .budget-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--emerald), var(--accent-2));
+      transition: width 0.3s ease;
+    }
+
+    .budget-fill.warn {
+      background: linear-gradient(90deg, var(--amber), var(--coral));
+    }
+
+    .insight-banner {
+      background: linear-gradient(90deg, var(--sky-dim), var(--emerald-dim));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 11px 14px;
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 16px 0 10px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .btn-primary {
+      background: var(--emerald);
+      color: var(--accent-text);
+      border: none;
+      border-radius: 12px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-danger {
+      background: var(--coral-dim);
+      color: #EF4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .upcoming-strip {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .upcoming-strip::-webkit-scrollbar { display: none; }
+
+    .due-chip {
+      min-width: 156px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      flex-shrink: 0;
+    }
+
+    .due-chip.urgent {
+      border-color: rgba(245, 158, 11, 0.5);
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.12), var(--surface-2));
+    }
+
+    .due-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--amber-dim);
+      color: #F59E0B;
+      margin-bottom: 6px;
+    }
+
+    .due-badge.soon {
+      background: var(--sky-dim);
+      color: var(--sky);
+    }
+
+    .due-badge.trial {
+      background: var(--coral-dim);
+      color: #EF4444;
+    }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 580px) {
+      .charts-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .donut-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .legend-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .search-sort-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .sort-select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .pills::-webkit-scrollbar { display: none; }
+
+    .pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .pill.active {
+      background: var(--emerald-dim);
+      border-color: var(--emerald);
+      color: var(--emerald);
+    }
+
+    .sub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sub-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .sub-item.paused {
+      opacity: 0.58;
+    }
+
+    .sub-left {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .sub-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .sub-info {
+      min-width: 0;
+    }
+
+    .sub-name {
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag-mini {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: var(--coral-dim);
+      color: #EF4444;
+    }
+
+    .tag-emi {
+      background: var(--amber-dim);
+      color: #F59E0B;
+    }
+
+    .sub-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .sub-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .sub-price {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .sub-actions {
+      display: flex;
+      gap: 5px;
+      justify-content: flex-end;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .icon-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .icon-btn.paid {
+      color: var(--emerald);
+      border-color: var(--emerald);
+    }
+
+    .sim-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .sim-stat {
+      background: var(--surface-2);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .sim-stat-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--emerald);
+    }
+
+    .sim-stat-lbl {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #475569;
+      transition: .25s;
+      border-radius: 999px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .25s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--emerald);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .theme-chip {
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .theme-chip.active {
+      border-color: var(--emerald);
+      background: var(--emerald-dim);
+    }
+
+    .theme-swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .plan-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .plan-card {
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .plan-card.selected {
+      border-color: var(--emerald);
+      background: linear-gradient(135deg, var(--emerald-dim), var(--surface-2));
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 6px calc(8px + var(--safe-bottom));
+      z-index: 40;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .nav-btn.active {
+      color: var(--emerald);
+      background: var(--emerald-dim);
+    }
+
+    .nav-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.8);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 60;
+      padding: 12px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    @media (min-width: 560px) {
+      .modal-backdrop { align-items: center; }
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      max-height: 88dvh;
+      overflow-y: auto;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .preset-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .preset-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .toast {
+      position: fixed;
+      top: calc(16px + var(--safe-top));
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: #0F172A;
+      color: #F8FAFC;
+      border: 1px solid var(--emerald);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 80;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+  </style>
+</head>
+<body>
+  <!-- ATTRACTIVE WELCOME SPLASH SCREEN -->
+  <div id="splashScreen" class="splash-screen">
+    <div class="splash-ring">
+      <svg width="56" height="56" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <rect x="14" y="10" width="28" height="38" rx="6" stroke="#052E21" stroke-width="3.5" fill="rgba(255,255,255,0.18)" />
+        <line x1="21" y1="20" x2="35" y2="20" stroke="#052E21" stroke-width="3" stroke-linecap="round" />
+        <line x1="21" y1="28" x2="31" y2="28" stroke="#052E21" stroke-width="3" stroke-linecap="round" />
+        <circle cx="44" cy="42" r="13" fill="#052E21" />
+        <path d="M39 42.5l3.5 3.5 6.5-7" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+    <div class="splash-title">SubPulse</div>
+    <div class="splash-sub">Global EMI, Bill &amp; Subscription Tracker</div>
+    <div class="splash-bar"><div class="splash-fill"></div></div>
+    <button id="skipSplashBtn" class="splash-skip">Enter Dashboard →</button>
+  </div>
+
+  <div id="toast" class="toast">Saved</div>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo" aria-label="SubPulse Bill & EMI Tracking Logo">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6" y="4" width="14" height="20" rx="3" stroke="#052E21" stroke-width="2.4" fill="rgba(255,255,255,0.2)" />
+            <line x1="10" y1="10" x2="16" y2="10" stroke="#052E21" stroke-width="2" stroke-linecap="round" />
+            <line x1="10" y1="14" x2="14" y2="14" stroke="#052E21" stroke-width="2" stroke-linecap="round" />
+            <circle cx="22" cy="21" r="6.5" fill="#052E21" />
+            <path d="M19.5 21.2l1.8 1.8 3.2-3.5" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div>
+          <div id="brandTitle" class="brand-title">SubPulse</div>
+          <div class="brand-sub">EMI &amp; Bill Tracker</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <select id="currencySelect" class="currency-select" aria-label="World Currency"></select>
+        <button id="openProBtn" class="pro-pill">★ PRO</button>
+      </div>
+    </header>
+
+    <!-- DASHBOARD TAB -->
+    <section id="tab-dashboard" class="tab-pane active">
+      <div class="card hero-card">
+        <div class="hero-label">Monthly Recurring Burn</div>
+        <div id="monthlyBurn" class="hero-amount">₹0</div>
+        <div class="hero-meta">
+          <span>Yearly: <strong id="yearlyBurn">₹0</strong></span>
+          <span>Active: <strong id="activeCount">0</strong></span>
+          <span>Daily Avg: <strong id="dailyBurn">₹0</strong></span>
+        </div>
+        <div class="budget-bar-wrap">
+          <div class="budget-bar-labels">
+            <span>Monthly Budget Limit</span>
+            <span id="budgetRatioText">0% used</span>
+          </div>
+          <div class="budget-track">
+            <div id="budgetFill" class="budget-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="insightBanner" class="insight-banner">
+        <span>💡</span>
+        <span id="insightText">Analyzing your recurring bills...</span>
+      </div>
+
+      <div class="section-head">
+        <div class="section-title">Upcoming Renewals (14d)</div>
+        <button id="addBtnTop" class="btn-primary">+ Add New</button>
+      </div>
+      <div id="upcomingStrip" class="upcoming-strip"></div>
+
+      <div class="charts-grid" style="margin-top: 14px;">
+        <div class="card">
+          <div class="section-title">Spend by Category</div>
+          <div class="donut-wrap">
+            <svg id="donutSvg" width="112" height="112" viewBox="0 0 112 112"></svg>
+            <div id="donutLegend" class="legend-list"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-title">6-Month Cashflow Forecast</div>
+          <svg id="barSvg" width="100%" height="122" viewBox="0 0 280 122" style="margin-top: 8px;"></svg>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div class="section-title">All Tracked Bills &amp; Subscriptions</div>
+      </div>
+      <div class="filter-row">
+        <div class="search-sort-row">
+          <input id="searchInput" type="search" class="search-input" placeholder="Search Light, Gas, EMI, Netflix..." />
+          <select id="sortSelect" class="sort-select" aria-label="Sort">
+            <option value="due">Soonest Due</option>
+            <option value="high">Highest Cost</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+        <div id="categoryPills" class="pills">
+          <button class="pill active" data-cat="All">All</button>
+          <button class="pill" data-cat="Utilities">Utilities</button>
+          <button class="pill" data-cat="EMI &amp; Loans">EMI &amp; Loans</button>
+          <button class="pill" data-cat="AI &amp; Work">AI &amp; Work</button>
+          <button class="pill" data-cat="Streaming">Streaming</button>
+          <button class="pill" data-cat="Fitness">Fitness</button>
+        </div>
+      </div>
+      <div id="subList" class="sub-list"></div>
+    </section>
+
+    <!-- SIMULATOR (CUT) TAB -->
+    <section id="tab-simulator" class="tab-pane">
+      <div class="card hero-card">
+        <div class="hero-label">What-If Cut &amp; Savings Simulator</div>
+        <div class="hero-amount" id="simYearlySaved">₹0 / yr</div>
+        <p style="font-size: 13px; color: var(--muted); margin-top: 4px;">
+          All your added bills &amp; EMIs appear below. Toggle OFF any item to see how much you save.
+        </p>
+        <div class="sim-summary">
+          <div class="sim-stat">
+            <div class="sim-stat-val" id="simMonthlySaved">₹0</div>
+            <div class="sim-stat-lbl">Monthly Saved</div>
+          </div>
+          <div class="sim-stat" id="simFiveYearCard" style="cursor:pointer;">
+            <div class="sim-stat-val" id="simFiveYearSaved">🔒 PRO</div>
+            <div class="sim-stat-lbl">5-Year Saved</div>
+          </div>
+          <div class="sim-stat">
+            <div class="sim-stat-val" id="simNewBurn">₹0</div>
+            <div class="sim-stat-lbl">New Monthly</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-head">
+        <div class="section-title">Keep or Cut? (<span id="simItemCount">0</span> Bills)</div>
+        <button id="resetSimBtn" class="btn-secondary">Reset All</button>
+      </div>
+      <div id="simList" class="sub-list"></div>
+    </section>
+
+    <!-- HISTORY TAB -->
+    <section id="tab-history" class="tab-pane">
+      <div class="card hero-card">
+        <div class="hero-label">Total Logged Payments</div>
+        <div class="hero-amount" id="historyTotalPaid">₹0</div>
+        <div class="hero-meta">
+          <span>Payments Logged: <strong id="historyCount">0</strong></span>
+        </div>
+      </div>
+      <div class="section-head">
+        <div class="section-title">Payment Ledger</div>
+        <button id="clearHistoryBtn" class="btn-secondary">Clear Log</button>
+      </div>
+      <div id="historyList" class="sub-list"></div>
+    </section>
+
+    <!-- SETTINGS TAB -->
+    <section id="tab-settings" class="tab-pane">
+      <div class="card">
+        <div class="section-title">App Colour Theme Studio (8 Themes)</div>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">
+          Tap any dark or light theme to transform the entire app:
+        </p>
+        <div id="themeGrid" class="theme-grid">
+          <button type="button" class="theme-chip active" data-theme="emerald">
+            <span class="theme-swatch" style="background: linear-gradient(135deg,#10B981,#38BDF8);"></span>
+            <span>Emerald Mint</span>
+          </button>
+          <button type="button" class="theme-chip" data-theme="sky">
+            <span class="theme-swatch" style="background: linear-gradient(135deg,#38BDF8,#818CF8);"></span>
+            <span>Electric Sky</span>
+          </button>
+          <button type="button" class="theme-chip" data-theme="gold">
+            <span class="theme-swatch" style="background: linear-gradient(135deg,#F59E0B,#FDE047);"></span>
+            <span>Royal Gold</span>
+          </button>
+          <button type="button" class="theme-chip" data-theme="violet">
+            <span class="theme-swatch" style="background: linear-gradient(135deg,#A78BFA,#F472B6);"></span>
+            <span>Neon Violet</span>
+          </button>
+          <button type="button" class="theme-chip" data-theme="rose">
+            <span class="theme-swatch" style="background: linear-gradient(135deg,#FB7185,#FB923C);"></span>
+            <span>Crimson Pulse</span>
+          </button>
+          <button type="button" class="theme-chip" data-theme="cyber">
+            <span class="theme-swatch" style="background: linear-gradient(135deg,#2DD4BF,#06B6D4);"></span>
+            <span>Cyber Teal</span>
+          </button>
+          <button type="button" class="theme-chip" data-theme="amoled">
+            <span class="theme-swatch" style="background: linear-gradient(135deg,#22C55E,#000000);"></span>
+            <span>AMOLED Black</span>
+          </button>
+          <button type="button" class="theme-chip" data-theme="light">
+            <span class="theme-swatch" style="background: linear-gradient(135deg,#FFFFFF,#10B981);"></span>
+            <span>Clean Light</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="margin-bottom: 10px;">Monthly Budget Target</div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label" for="budgetInput">Alert threshold in selected currency</label>
+          <div style="display: flex; gap: 8px;">
+            <input id="budgetInput" type="number" class="form-control" min="100" step="100" />
+            <button id="saveBudgetBtn" class="btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="margin-bottom: 8px;">Data &amp; Offline Backup</div>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">
+          100% private. CSV &amp; JSON backup require Guardian Pro.
+        </p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <button id="exportCsvBtn" class="btn-secondary">Export CSV 🔒</button>
+          <button id="exportJsonBtn" class="btn-secondary">Backup JSON 🔒</button>
+          <label class="btn-secondary" style="cursor: pointer;">
+            Restore JSON
+            <input id="importJsonInput" type="file" accept=".json" style="display:none;" />
+          </label>
+          <button id="clearSampleBtn" class="btn-danger">Clear All Data</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="margin-bottom: 6px;">SubPulse Guardian Pro</div>
+        <p id="proStatusText" style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">
+          7-Day Free Trial Active.
+        </p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button id="settingsProBtn" class="btn-primary">Manage Subscription</button>
+          <button id="restorePurchasesBtn" class="btn-secondary">Restore Purchases</button>
+          <button id="expireTrialBtn" class="btn-secondary" style="display:none;">Simulate Trial Expired</button>
+          <button id="resetFreeBtn" class="btn-secondary" style="display:none;">Restart 7-Day Trial</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-tab="dashboard">
+      <span class="nav-icon">📊</span>
+      <span>Dashboard</span>
+    </button>
+    <button class="nav-btn" data-tab="simulator">
+      <span class="nav-icon">✂️</span>
+      <span>Cut &amp; Save</span>
+    </button>
+    <button class="nav-btn" data-tab="history">
+      <span class="nav-icon">🧾</span>
+      <span>History</span>
+    </button>
+    <button class="nav-btn" data-tab="settings">
+      <span class="nav-icon">🎨</span>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- ADD / EDIT MODAL -->
+  <div id="itemModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="modalTitle" style="font-size: 17px; font-weight: 700;">Add Subscription / EMI</h3>
+        <button id="closeModalBtn" class="icon-btn">✕ Close</button>
+      </div>
+
+      <div class="preset-grid" id="presetGrid">
+        <button type="button" class="preset-btn" data-name="Light Bill (Electricity)" data-amt="1800" data-cat="Utilities">Light Bill</button>
+        <button type="button" class="preset-btn" data-name="Gas Bill" data-amt="950" data-cat="Utilities">Gas Bill</button>
+        <button type="button" class="preset-btn" data-name="Mobile Bill / Recharge" data-amt="599" data-cat="Utilities">Mobile Bill</button>
+        <button type="button" class="preset-btn" data-name="Wi-Fi Broadband" data-amt="999" data-cat="Utilities">Wi-Fi Bill</button>
+        <button type="button" class="preset-btn" data-name="Home Loan EMI" data-amt="22000" data-cat="EMI & Loans">Home Loan EMI</button>
+        <button type="button" class="preset-btn" data-name="Car EMI" data-amt="12500" data-cat="EMI & Loans">Car EMI</button>
+        <button type="button" class="preset-btn" data-name="Two-Wheeler EMI" data-amt="3800" data-cat="EMI & Loans">Two-Wheeler EMI</button>
+        <button type="button" class="preset-btn" data-name="House Rent" data-amt="15000" data-cat="Utilities">House Rent</button>
+        <button type="button" class="preset-btn" data-name="Health / Life Insurance" data-amt="12000" data-cat="EMI & Loans">Insurance</button>
+        <button type="button" class="preset-btn" data-name="Netflix" data-amt="649" data-cat="Streaming">Netflix</button>
+        <button type="button" class="preset-btn" data-name="ChatGPT Plus" data-amt="1950" data-cat="AI & Work">ChatGPT Plus</button>
+      </div>
+
+      <form id="subForm">
+        <input type="hidden" id="editId" />
+        <div class="form-group">
+          <label class="form-label" for="subName">Service or Bill Name</label>
+          <input id="subName" class="form-control" type="text" required placeholder="e.g. Light Bill, Car EMI, Netflix" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="subAmount">Amount</label>
+            <input id="subAmount" class="form-control" type="number" min="1" step="0.01" required placeholder="649" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="subCycle">Billing Cycle</label>
+            <select id="subCycle" class="form-control">
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
+              <option value="quarterly">Quarterly</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="subCategory">Category</label>
+            <select id="subCategory" class="form-control">
+              <option value="Utilities">Utilities</option>
+              <option value="EMI & Loans">EMI &amp; Loans</option>
+              <option value="AI & Work">AI &amp; Work</option>
+              <option value="Streaming">Streaming</option>
+              <option value="Fitness">Fitness</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="subDate">Next Renewal Date</label>
+            <input id="subDate" class="form-control" type="date" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="subEmisLeft">EMIs Left (Optional)</label>
+            <input id="subEmisLeft" class="form-control" type="number" min="0" placeholder="e.g. 12" />
+          </div>
+          <div class="form-group" style="display:flex;align-items:center;gap:8px;padding-top:22px;">
+            <input id="subTrial" type="checkbox" style="width:18px;height:18px;" />
+            <label for="subTrial" style="font-size:13px;font-weight:600;cursor:pointer;">Free Trial Alert</label>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px;">
+          <button type="button" id="cancelModalBtn" class="btn-secondary">Cancel</button>
+          <button type="submit" class="btn-primary">Save Tracker</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SUBSCRIPTION PAYWALL MODAL -->
+  <div id="proModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 style="font-size: 18px; font-weight: 800;">★ SubPulse Guardian Pro</h3>
+        <button id="closeProBtn" class="icon-btn">✕</button>
+      </div>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">
+        Start with 7 days free, then upgrade to Pro for unlimited bills &amp; EMIs, 5-year simulator, and CSV/JSON exports:
+      </p>
+
+      <div class="plan-grid" id="planGrid">
+        <div class="plan-card" data-plan="subpulse_pro_monthly">
+          <div>
+            <div style="font-weight:700;font-size:14px;">Monthly Pro</div>
+            <div style="font-size:12px;color:var(--muted);">Cancel anytime</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-weight:800;font-size:16px;">₹99 / mo</div>
+            <div style="font-size:11px;color:var(--muted);">$2.99/mo</div>
+          </div>
+        </div>
+        <div class="plan-card selected" data-plan="subpulse_pro_yearly">
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--emerald);">Yearly Pro • BEST VALUE</div>
+            <div style="font-size:12px;color:var(--muted);">Save 58% • 7-day free trial</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-weight:800;font-size:16px;">₹499 / yr</div>
+            <div style="font-size:11px;color:var(--muted);">$19.99/yr</div>
+          </div>
+        </div>
+        <div class="plan-card" data-plan="subpulse_pro_lifetime">
+          <div>
+            <div style="font-weight:700;font-size:14px;">Lifetime Guardian</div>
+            <div style="font-size:12px;color:var(--muted);">Pay once, own forever</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-weight:800;font-size:16px;">₹1,499</div>
+            <div style="font-size:11px;color:var(--muted);">$39.99 once</div>
+          </div>
+        </div>
+      </div>
+
+      <button id="subscribeNowBtn" class="btn-primary" style="width:100%; justify-content:center; margin-bottom: 8px;">
+        Continue with Yearly Pro
+      </button>
+      <button id="modalRestoreBtn" class="btn-secondary" style="width:100%;">
+        Restore Purchases
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'subpulse_state_v5';
+    const FREE_LIMIT = 4;
+    const TRIAL_DAYS = 7;
+
+    const THEMES = {
+      emerald: { primary: '#10B981', dim: 'rgba(16, 185, 129, 0.16)', sec: '#38BDF8', text: '#052E21', bg: '#090D16', surf: '#111827', surf2: '#1A2333', fg: '#F8FAFC', muted: '#94A3B8', hero: 'linear-gradient(180deg, #131C2E 0%, #0F172A 100%)', border: 'rgba(255,255,255,0.09)' },
+      sky:     { primary: '#38BDF8', dim: 'rgba(56, 189, 248, 0.16)', sec: '#818CF8', text: '#082F49', bg: '#080E1A', surf: '#0F172A', surf2: '#1E293B', fg: '#F8FAFC', muted: '#94A3B8', hero: 'linear-gradient(180deg, #0F172A 0%, #091122 100%)', border: 'rgba(255,255,255,0.09)' },
+      gold:    { primary: '#F59E0B', dim: 'rgba(245, 158, 11, 0.16)', sec: '#FDE047', text: '#451A03', bg: '#0D0B07', surf: '#17130C', surf2: '#231D13', fg: '#FFFBEB', muted: '#D6C7A9', hero: 'linear-gradient(180deg, #1C160C 0%, #120E07 100%)', border: 'rgba(253,224,71,0.12)' },
+      violet:  { primary: '#A78BFA', dim: 'rgba(167, 139, 250, 0.16)', sec: '#F472B6', text: '#2E1065', bg: '#0B0914', surf: '#141122', surf2: '#1E1A33', fg: '#FAF5FF', muted: '#B8AED4', hero: 'linear-gradient(180deg, #19132B 0%, #100C1C 100%)', border: 'rgba(255,255,255,0.1)' },
+      rose:    { primary: '#FB7185', dim: 'rgba(251, 113, 133, 0.16)', sec: '#FB923C', text: '#4C0519', bg: '#11090D', surf: '#1B1016', surf2: '#291821', fg: '#FFF1F2', muted: '#D1A5B0', hero: 'linear-gradient(180deg, #22121A 0%, #160B10 100%)', border: 'rgba(255,255,255,0.1)' },
+      cyber:   { primary: '#2DD4BF', dim: 'rgba(45, 212, 191, 0.16)', sec: '#06B6D4', text: '#042F2E', bg: '#041214', surf: '#0A1E22', surf2: '#122B30', fg: '#F0FDFA', muted: '#99B8B8', hero: 'linear-gradient(180deg, #0B2529 0%, #061619 100%)', border: 'rgba(45,212,191,0.14)' },
+      amoled:  { primary: '#22C55E', dim: 'rgba(34, 197, 94, 0.16)', sec: '#4ADE80', text: '#052E16', bg: '#000000', surf: '#0B0B0D', surf2: '#16161A', fg: '#FFFFFF', muted: '#A1A1AA', hero: 'linear-gradient(180deg, #0D110E 0%, #000000 100%)', border: 'rgba(255,255,255,0.12)' },
+      light:   { primary: '#059669', dim: 'rgba(5, 150, 105, 0.12)', sec: '#0284C7', text: '#FFFFFF', bg: '#F1F5F9', surf: '#FFFFFF', surf2: '#E2E8F0', fg: '#0F172A', muted: '#475569', hero: 'linear-gradient(180deg, #ECFDF5 0%, #FFFFFF 100%)', border: 'rgba(15,23,42,0.1)' }
+    };
+
+    const CURRENCIES = {
+      INR: { symbol: '₹', label: '🇮🇳 ₹ INR', locale: 'en-IN' },
+      USD: { symbol: '$', label: '🇺🇸 $ USD', locale: 'en-US' },
+      EUR: { symbol: '€', label: '🇪🇺 € EUR', locale: 'de-DE' },
+      GBP: { symbol: '£', label: '🇬🇧 £ GBP', locale: 'en-GB' },
+      AED: { symbol: 'د.إ', label: '🇦🇪 AED', locale: 'en-AE' },
+      CAD: { symbol: 'C$', label: '🇨🇦 C$ CAD', locale: 'en-CA' },
+      AUD: { symbol: 'A$', label: '🇦🇺 A$ AUD', locale: 'en-AU' },
+      SGD: { symbol: 'S$', label: '🇸🇬 S$ SGD', locale: 'en-SG' },
+      JPY: { symbol: '¥', label: '🇯🇵 ¥ JPY', locale: 'ja-JP' },
+      CNY: { symbol: '¥', label: '🇨🇳 ¥ CNY', locale: 'zh-CN' },
+      CHF: { symbol: 'Fr', label: '🇨🇭 Fr CHF', locale: 'de-CH' },
+      SAR: { symbol: '﷼', label: '🇸🇦 ﷼ SAR', locale: 'en-SA' },
+      QAR: { symbol: '﷼', label: '🇶🇦 ﷼ QAR', locale: 'en-QA' },
+      KWD: { symbol: 'د.ك', label: '🇰🇼 KWD', locale: 'en-KW' },
+      MYR: { symbol: 'RM', label: '🇲🇾 RM MYR', locale: 'ms-MY' },
+      IDR: { symbol: 'Rp', label: '🇮🇩 Rp IDR', locale: 'id-ID' },
+      PHP: { symbol: '₱', label: '🇵🇭 ₱ PHP', locale: 'en-PH' },
+      THB: { symbol: '฿', label: '🇹🇭 ฿ THB', locale: 'th-TH' },
+      VND: { symbol: '₫', label: '🇻🇳 ₫ VND', locale: 'vi-VN' },
+      KRW: { symbol: '₩', label: '🇰🇷 ₩ KRW', locale: 'ko-KR' },
+      BRL: { symbol: 'R$', label: '🇧🇷 R$ BRL', locale: 'pt-BR' },
+      MXN: { symbol: '$', label: '🇲🇽 $ MXN', locale: 'es-MX' },
+      ZAR: { symbol: 'R', label: '🇿🇦 R ZAR', locale: 'en-ZA' },
+      NGN: { symbol: '₦', label: '🇳🇬 ₦ NGN', locale: 'en-NG' },
+      TRY: { symbol: '₺', label: '🇹🇷 ₺ TRY', locale: 'tr-TR' },
+      PLN: { symbol: 'zł', label: '🇵🇱 zł PLN', locale: 'pl-PL' },
+      SEK: { symbol: 'kr', label: '🇸🇪 kr SEK', locale: 'sv-SE' },
+      NZD: { symbol: 'NZ$', label: '🇳🇿 NZ$ NZD', locale: 'en-NZ' }
+    };
+
+    const CAT_COLORS = {
+      'AI & Work': '#38BDF8',
+      'Streaming': '#A78BFA',
+      'EMI & Loans': '#F59E0B',
+      'Utilities': '#10B981',
+      'Fitness': '#FB7185'
+    };
+
+    function addDaysISO(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString().slice(0, 10);
+    }
+
+    function advanceDateISO(dateStr, cycle) {
+      const d = new Date(dateStr + 'T00:00:00');
+      if (cycle === 'yearly') d.setFullYear(d.getFullYear() + 1);
+      else if (cycle === 'quarterly') d.setMonth(d.getMonth() + 3);
+      else if (cycle === 'weekly') d.setDate(d.getDate() + 7);
+      else d.setMonth(d.getMonth() + 1);
+      return d.toISOString().slice(0, 10);
+    }
+
+    const DEFAULT_ITEMS = [
+      { id: '1', name: 'ChatGPT Plus', amount: 1950, cycle: 'monthly', category: 'AI & Work', nextDate: addDaysISO(2), paused: false, isTrial: false, emisLeft: 0 },
+      { id: '2', name: 'Netflix 4K', amount: 649, cycle: 'monthly', category: 'Streaming', nextDate: addDaysISO(5), paused: false, isTrial: false, emisLeft: 0 },
+      { id: '3', name: 'Bike Loan EMI', amount: 4850, cycle: 'monthly', category: 'EMI & Loans', nextDate: addDaysISO(8), paused: false, isTrial: false, emisLeft: 9 }
+    ];
+
+    let state = {
+      theme: 'emerald',
+      currency: 'INR',
+      budget: 15000,
+      isPro: false,
+      activePlan: null,
+      trialStartDate: Date.now(),
+      selectedPlan: 'subpulse_pro_yearly',
+      filterCat: 'All',
+      sortBy: 'due',
+      search: '',
+      items: DEFAULT_ITEMS,
+      history: [],
+      simOffIds: []
+    };
+
+    function populateCurrencies() {
+      const sel = document.getElementById('currencySelect');
+      sel.innerHTML = Object.entries(CURRENCIES)
+        .map(([code, cfg]) => `<option value="${code}">${cfg.label}</option>`)
+        .join('');
+    }
+
+    function hideSplash() {
+      const sp = document.getElementById('splashScreen');
+      if (sp) sp.classList.add('hide');
+    }
+
+    function trialDaysLeft() {
+      const start = Number(state.trialStartDate) || Date.now();
+      const elapsedDays = (Date.now() - start) / 86400000;
+      return Math.max(0, Math.ceil(TRIAL_DAYS - elapsedDays));
+    }
+
+    function hasProAccess() {
+      return Boolean(state.isPro) || trialDaysLeft() > 0;
+    }
+
+    function applyTheme(name) {
+      const t = THEMES[name] || THEMES.emerald;
+      const root = document.documentElement.style;
+      root.setProperty('--emerald', t.primary);
+      root.setProperty('--emerald-dim', t.dim);
+      root.setProperty('--accent-2', t.sec);
+      root.setProperty('--accent-text', t.text);
+      root.setProperty('--bg', t.bg);
+      root.setProperty('--surface', t.surf);
+      root.setProperty('--surface-2', t.surf2);
+      root.setProperty('--text', t.fg);
+      root.setProperty('--muted', t.muted);
+      root.setProperty('--hero-bg', t.hero);
+      root.setProperty('--border', t.border);
+      document.querySelectorAll('#themeGrid .theme-chip').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.theme === name);
+      });
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.items)) {
+            state = { ...state, ...parsed };
+            if (!state.trialStartDate) state.trialStartDate = Date.now();
+          }
+        }
+      } catch (e) {}
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2300);
+    }
+
+    function fmt(val) {
+      const cfg = CURRENCIES[state.currency] || CURRENCIES.INR;
+      const num = Math.round(Number(val) || 0);
+      try {
+        return cfg.symbol + num.toLocaleString(cfg.locale);
+      } catch (e) {
+        return cfg.symbol + num.toLocaleString('en-US');
+      }
+    }
+
+    function toMonthly(item) {
+      const amt = Number(item.amount) || 0;
+      if (item.cycle === 'yearly') return amt / 12;
+      if (item.cycle === 'quarterly') return amt / 3;
+      if (item.cycle === 'weekly') return amt * 4.333;
+      return amt;
+    }
+
+    function daysUntil(dateStr) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const target = new Date(dateStr + 'T00:00:00');
+      return Math.round((target - today) / 86400000);
+    }
+
+    function renderAll() {
+      applyTheme(state.theme);
+      document.getElementById('currencySelect').value = state.currency;
+      document.getElementById('budgetInput').value = state.budget;
+      document.getElementById('sortSelect').value = state.sortBy;
+
+      const unlocked = hasProAccess();
+      const daysLeft = trialDaysLeft();
+      const proPill = document.getElementById('openProBtn');
+      if (state.isPro) {
+        proPill.textContent = '★ PRO ACTIVE';
+      } else if (daysLeft > 0) {
+        proPill.textContent = `★ TRIAL (${daysLeft}d)`;
+      } else {
+        proPill.textContent = '★ UPGRADE';
+      }
+      proPill.classList.toggle('active-pro', unlocked);
+      document.getElementById('resetFreeBtn').style.display = (state.isPro || daysLeft === 0) ? 'inline-flex' : 'none';
+      document.getElementById('resetFreeBtn').textContent = state.isPro ? 'Switch to Free' : 'Restart 7-Day Trial';
+      document.getElementById('expireTrialBtn').style.display = (!state.isPro && daysLeft > 0) ? 'inline-flex' : 'none';
+      document.getElementById('exportCsvBtn').textContent = unlocked ? 'Export CSV' : 'Export CSV 🔒';
+      document.getElementById('exportJsonBtn').textContent = unlocked ? 'Backup JSON' : 'Backup JSON 🔒';
+      document.getElementById('proStatusText').textContent = state.isPro
+        ? `Pro Active (${state.activePlan || 'Guardian Pro'}). Unlimited bills, 5-year simulator & exports unlocked.`
+        : daysLeft > 0
+          ? `7-Day Free Trial Active (${daysLeft} days left). All Pro features & unlimited bills unlocked!`
+          : `Trial ended. Free plan allows up to ${FREE_LIMIT} trackers. Upgrade to Pro to unlock unlimited bills & exports.`;
+
+      const activeItems = state.items.filter(i => !i.paused);
+      const monthlyTotal = activeItems.reduce((sum, i) => sum + toMonthly(i), 0);
+      const yearlyTotal = monthlyTotal * 12;
+      const dailyTotal = monthlyTotal / 30;
+
+      document.getElementById('monthlyBurn').textContent = fmt(monthlyTotal);
+      document.getElementById('yearlyBurn').textContent = fmt(yearlyTotal);
+      document.getElementById('activeCount').textContent = String(activeItems.length);
+      document.getElementById('dailyBurn').textContent = fmt(dailyTotal);
+
+      const budget = Math.max(1, Number(state.budget) || 1);
+      const pct = Math.min(100, Math.round((monthlyTotal / budget) * 100));
+      document.getElementById('budgetRatioText').textContent = `${pct}% of ${fmt(budget)}`;
+      const fill = document.getElementById('budgetFill');
+      fill.style.width = `${pct}%`;
+      fill.classList.toggle('warn', pct >= 85);
+
+      renderInsight(activeItems, monthlyTotal);
+      renderUpcoming(activeItems);
+      renderDonut(activeItems, monthlyTotal);
+      renderBarChart(monthlyTotal);
+      renderList();
+      renderSimulator(state.items, monthlyTotal);
+      renderHistory();
+    }
+
+    function renderInsight(activeItems, monthlyTotal) {
+      const el = document.getElementById('insightText');
+      if (!activeItems.length) {
+        el.textContent = 'Add your first subscription, light bill, or EMI to start tracking.';
+        return;
+      }
+      const trials = activeItems.filter(i => i.isTrial && daysUntil(i.nextDate) <= 7);
+      if (trials.length) {
+        el.textContent = `Trial Alert: "${trials[0].name}" ends in ${Math.max(0, daysUntil(trials[0].nextDate))} days (${fmt(trials[0].amount)}).`;
+        return;
+      }
+      const top = [...activeItems].sort((a, b) => toMonthly(b) - toMonthly(a))[0];
+      const topShare = monthlyTotal > 0 ? Math.round((toMonthly(top) / monthlyTotal) * 100) : 0;
+      el.textContent = `Top spend: ${top.name} takes ${topShare}% of your monthly recurring burn (${fmt(toMonthly(top))}/mo).`;
+    }
+
+    function renderUpcoming(activeItems) {
+      const strip = document.getElementById('upcomingStrip');
+      const upcoming = activeItems
+        .map(i => ({ ...i, days: daysUntil(i.nextDate) }))
+        .filter(i => i.days >= 0 && i.days <= 14)
+        .sort((a, b) => a.days - b.days);
+
+      if (!upcoming.length) {
+        strip.innerHTML = `<div class="due-chip"><div class="due-badge soon">All Clear</div><div style="font-size:13px;font-weight:600;">No bills due in next 14 days</div></div>`;
+        return;
+      }
+
+      strip.innerHTML = upcoming.map(i => {
+        const urgent = i.days <= 3 || i.isTrial;
+        const label = i.isTrial ? `Trial • ${i.days}d` : i.days === 0 ? 'Due Today' : i.days === 1 ? 'Tomorrow' : `In ${i.days} days`;
+        const badgeClass = i.isTrial ? 'trial' : urgent ? '' : 'soon';
+        return `
+          <div class="due-chip ${urgent ? 'urgent' : ''}">
+            <span class="due-badge ${badgeClass}">${label}</span>
+            <div style="font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(i.name)}</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:2px;">${fmt(i.amount)} • ${i.cycle}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderDonut(activeItems, monthlyTotal) {
+      const svg = document.getElementById('donutSvg');
+      const legend = document.getElementById('donutLegend');
+      const totals = {};
+      activeItems.forEach(i => {
+        totals[i.category] = (totals[i.category] || 0) + toMonthly(i);
+      });
+
+      const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+      if (!entries.length || monthlyTotal <= 0) {
+        svg.innerHTML = `<circle cx="56" cy="56" r="40" fill="none" stroke="#1E293B" stroke-width="14" />`;
+        legend.innerHTML = `<div style="color:var(--muted);">No active spend</div>`;
+        return;
+      }
+
+      const r = 40;
+      const c = 2 * Math.PI * r;
+      let offset = 0;
+      let circles = '';
+      entries.forEach(([cat, val]) => {
+        const frac = val / monthlyTotal;
+        const dash = frac * c;
+        const color = CAT_COLORS[cat] || '#10B981';
+        circles += `<circle cx="56" cy="56" r="${r}" fill="none" stroke="${color}" stroke-width="14" stroke-dasharray="${dash.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${(-offset).toFixed(2)}" transform="rotate(-90 56 56)" />`;
+        offset += dash;
+      });
+      const t = THEMES[state.theme] || THEMES.emerald;
+      svg.innerHTML = circles + `<text x="56" y="60" text-anchor="middle" fill="${t.fg}" font-size="12" font-weight="700">${entries.length} Cats</text>`;
+
+      legend.innerHTML = entries.map(([cat, val]) => {
+        const color = CAT_COLORS[cat] || '#10B981';
+        const pct = Math.round((val / monthlyTotal) * 100);
+        return `
+          <div class="legend-item">
+            <div style="display:flex;align-items:center;gap:6px;min-width:0;">
+              <span class="legend-dot" style="background:${color};"></span>
+              <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(cat)}</span>
+            </div>
+            <strong>${pct}%</strong>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderBarChart(monthlyTotal) {
+      const svg = document.getElementById('barSvg');
+      const months = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'];
+      const now = new Date();
+      for (let i = 0; i < 6; i++) {
+        const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+        months[i] = d.toLocaleString('en-US', { month: 'short' });
+      }
+      const maxH = 72;
+      const barH = monthlyTotal > 0 ? maxH : 6;
+      const t = THEMES[state.theme] || THEMES.emerald;
+      svg.innerHTML = months.map((m, idx) => {
+        const x = 14 + idx * 44;
+        const y = 84 - barH;
+        const fill = idx === 0 ? t.primary : t.sec;
+        const op = idx === 0 ? '1' : '0.7';
+        return `
+          <rect x="${x}" y="${y}" width="26" height="${barH}" rx="6" fill="${fill}" opacity="${op}"></rect>
+          <text x="${x + 13}" y="106" text-anchor="middle" fill="${t.muted}" font-size="11">${m}</text>
+        `;
+      }).join('');
+    }
+
+    function renderList() {
+      const list = document.getElementById('subList');
+      const q = state.search.trim().toLowerCase();
+      let filtered = state.items.filter(i => {
+        const matchCat = state.filterCat === 'All' || i.category === state.filterCat;
+        const matchQ = !q || i.name.toLowerCase().includes(q) || i.category.toLowerCase().includes(q);
+        return matchCat && matchQ;
+      });
+
+      if (state.sortBy === 'high') {
+        filtered.sort((a, b) => toMonthly(b) - toMonthly(a));
+      } else if (state.sortBy === 'name') {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+      } else {
+        filtered.sort((a, b) => daysUntil(a.nextDate) - daysUntil(b.nextDate));
+      }
+
+      if (!filtered.length) {
+        list.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">No matching bills. Tap <strong>+ Add New</strong> to track one.</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(i => {
+        const color = CAT_COLORS[i.category] || '#10B981';
+        const initial = (i.name || '?').trim().charAt(0).toUpperCase();
+        const days = daysUntil(i.nextDate);
+        const dueText = days < 0 ? 'Overdue' : days === 0 ? 'Due Today' : `Due in ${days}d`;
+        const trialBadge = i.isTrial ? `<span class="tag-mini">TRIAL</span>` : '';
+        const emiBadge = i.emisLeft > 0 ? `<span class="tag-mini tag-emi">${i.emisLeft} EMIs left</span>` : '';
+        return `
+          <div class="sub-item ${i.paused ? 'paused' : ''}">
+            <div class="sub-left">
+              <div class="sub-icon" style="background:${color}22;color:${color};">${escapeHtml(initial)}</div>
+              <div class="sub-info">
+                <div class="sub-name">${escapeHtml(i.name)} ${trialBadge} ${emiBadge}</div>
+                <div class="sub-meta">${escapeHtml(i.category)} • ${dueText} (${i.nextDate})</div>
+              </div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">${fmt(i.amount)}<span style="font-size:11px;color:var(--muted);font-weight:500;">/${i.cycle === 'yearly' ? 'yr' : i.cycle === 'quarterly' ? 'qtr' : i.cycle === 'weekly' ? 'wk' : 'mo'}</span></div>
+              <div class="sub-actions">
+                <button class="icon-btn paid" onclick="markPaid('${i.id}')">✓ Paid</button>
+                <button class="icon-btn" onclick="exportCalendar('${i.id}')">📅</button>
+                <button class="icon-btn" onclick="togglePause('${i.id}')">${i.paused ? 'Resume' : 'Pause'}</button>
+                <button class="icon-btn" onclick="openEdit('${i.id}')">Edit</button>
+                <button class="icon-btn" onclick="deleteItem('${i.id}')">Del</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderSimulator(allItems, currentMonthly) {
+      const simList = document.getElementById('simList');
+      document.getElementById('simItemCount').textContent = String(allItems.length);
+      let savedMonthly = 0;
+      allItems.forEach(i => {
+        if (!i.paused && state.simOffIds.includes(i.id)) {
+          savedMonthly += toMonthly(i);
+        }
+      });
+
+      document.getElementById('simMonthlySaved').textContent = fmt(savedMonthly);
+      document.getElementById('simYearlySaved').textContent = `${fmt(savedMonthly * 12)} / yr`;
+      document.getElementById('simFiveYearSaved').textContent = hasProAccess() ? fmt(savedMonthly * 60) : '🔒 PRO';
+      document.getElementById('simNewBurn').textContent = fmt(Math.max(0, currentMonthly - savedMonthly));
+
+      if (!allItems.length) {
+        simList.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">Add bills or EMIs first to simulate cutting costs.</div>`;
+        return;
+      }
+
+      simList.innerHTML = allItems.map(i => {
+        const isKept = !state.simOffIds.includes(i.id) && !i.paused;
+        const statusTag = i.paused ? ' • Paused' : '';
+        return `
+          <div class="sub-item ${i.paused ? 'paused' : ''}">
+            <div class="sub-info">
+              <div class="sub-name">${escapeHtml(i.name)}</div>
+              <div class="sub-meta">${escapeHtml(i.category)}${statusTag} • Impact: ${fmt(toMonthly(i))}/mo</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" ${isKept ? 'checked' : ''} onchange="toggleSim('${i.id}', this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderHistory() {
+      const list = document.getElementById('historyList');
+      const total = state.history.reduce((s, h) => s + (Number(h.amount) || 0), 0);
+      document.getElementById('historyTotalPaid').textContent = fmt(total);
+      document.getElementById('historyCount').textContent = String(state.history.length);
+
+      if (!state.history.length) {
+        list.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">Tap <strong>✓ Paid</strong> on any bill to log payment history and auto-advance its next due date.</div>`;
+        return;
+      }
+
+      list.innerHTML = state.history.map(h => `
+        <div class="sub-item">
+          <div class="sub-info">
+            <div class="sub-name">${escapeHtml(h.name)}</div>
+            <div class="sub-meta">Paid on ${h.paidOn} • ${escapeHtml(h.category)}</div>
+          </div>
+          <div class="sub-price" style="color:var(--emerald);">${fmt(h.amount)}</div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+    }
+
+    window.markPaid = function(id) {
+      const item = state.items.find(x => x.id === id);
+      if (!item) return;
+      state.history.unshift({
+        id: String(Date.now()),
+        name: item.name,
+        amount: item.amount,
+        category: item.category,
+        paidOn: new Date().toISOString().slice(0, 10)
+      });
+      item.nextDate = advanceDateISO(item.nextDate, item.cycle);
+      if (item.emisLeft > 0) item.emisLeft = Math.max(0, item.emisLeft - 1);
+      saveState();
+      renderAll();
+      showToast(`Marked Paid • Next: ${item.nextDate}`);
+    };
+
+    window.exportCalendar = function(id) {
+      const item = state.items.find(x => x.id === id);
+      if (!item) return;
+      const dt = item.nextDate.replace(/-/g, '');
+      const ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//SubPulse//Bill Guardian//EN',
+        'BEGIN:VEVENT',
+        `DTSTART;VALUE=DATE:${dt}`,
+        `DTEND;VALUE=DATE:${dt}`,
+        `SUMMARY:Renewal: ${item.name} (${fmt(item.amount)})`,
+        `DESCRIPTION:Tracked by SubPulse`,
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+      downloadFile(`${item.name.replace(/\s+/g, '_')}.ics`, ics, 'text/calendar');
+      showToast('Calendar Reminder Downloaded');
+    };
+
+    window.togglePause = function(id) {
+      const item = state.items.find(x => x.id === id);
+      if (item) {
+        item.paused = !item.paused;
+        saveState();
+        renderAll();
+        showToast(item.paused ? 'Paused' : 'Resumed');
+      }
+    };
+
+    window.deleteItem = function(id) {
+      state.items = state.items.filter(x => x.id !== id);
+      state.simOffIds = state.simOffIds.filter(x => x !== id);
+      saveState();
+      renderAll();
+      showToast('Deleted');
+    };
+
+    window.toggleSim = function(id, keep) {
+      const item = state.items.find(x => x.id === id);
+      if (item && item.paused && keep) item.paused = false;
+      if (keep) {
+        state.simOffIds = state.simOffIds.filter(x => x !== id);
+      } else if (!state.simOffIds.includes(id)) {
+        state.simOffIds.push(id);
+      }
+      saveState();
+      renderAll();
+    };
+
+    window.openEdit = function(id) {
+      const item = state.items.find(x => x.id === id);
+      if (!item) return;
+      document.getElementById('modalTitle').textContent = 'Edit Tracker';
+      document.getElementById('editId').value = item.id;
+      document.getElementById('subName').value = item.name;
+      document.getElementById('subAmount').value = item.amount;
+      document.getElementById('subCycle').value = item.cycle;
+      document.getElementById('subCategory').value = item.category;
+      document.getElementById('subDate').value = item.nextDate;
+      document.getElementById('subEmisLeft').value = item.emisLeft || '';
+      document.getElementById('subTrial').checked = Boolean(item.isTrial);
+      document.getElementById('itemModal').classList.add('open');
+    };
+
+    function openAddModal() {
+      if (!hasProAccess() && state.items.length >= FREE_LIMIT) {
+        document.getElementById('proModal').classList.add('open');
+        showToast('7-Day Trial ended — Upgrade to Pro for unlimited bills!');
+        return;
+      }
+      document.getElementById('modalTitle').textContent = 'Add Subscription / EMI';
+      document.getElementById('subForm').reset();
+      document.getElementById('editId').value = '';
+      document.getElementById('subDate').value = addDaysISO(7);
+      document.getElementById('itemModal').classList.add('open');
+    }
+
+    function closeItemModal() {
+      document.getElementById('itemModal').classList.remove('open');
+    }
+
+    document.getElementById('skipSplashBtn').addEventListener('click', hideSplash);
+    document.getElementById('addBtnTop').addEventListener('click', openAddModal);
+    document.getElementById('closeModalBtn').addEventListener('click', closeItemModal);
+    document.getElementById('cancelModalBtn').addEventListener('click', closeItemModal);
+
+    document.getElementById('presetGrid').addEventListener('click', (e) => {
+      const btn = e.target.closest('.preset-btn');
+      if (!btn) return;
+      document.getElementById('subName').value = btn.dataset.name;
+      document.getElementById('subAmount').value = btn.dataset.amt;
+      document.getElementById('subCategory').value = btn.dataset.cat;
+    });
+
+    document.getElementById('subForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = document.getElementById('editId').value;
+      const payload = {
+        id: id || String(Date.now()),
+        name: document.getElementById('subName').value.trim(),
+        amount: parseFloat(document.getElementById('subAmount').value) || 0,
+        cycle: document.getElementById('subCycle').value,
+        category: document.getElementById('subCategory').value,
+        nextDate: document.getElementById('subDate').value,
+        emisLeft: parseInt(document.getElementById('subEmisLeft').value, 10) || 0,
+        isTrial: document.getElementById('subTrial').checked,
+        paused: false
+      };
+      if (id) {
+        const idx = state.items.findIndex(x => x.id === id);
+        if (idx >= 0) state.items[idx] = { ...state.items[idx], ...payload };
+      } else {
+        state.items.unshift(payload);
+      }
+      saveState();
+      closeItemModal();
+      renderAll();
+      showToast('Tracker Saved');
+    });
+
+    document.getElementById('themeGrid').addEventListener('click', (e) => {
+      const btn = e.target.closest('.theme-chip');
+      if (!btn) return;
+      state.theme = btn.dataset.theme;
+      saveState();
+      renderAll();
+      showToast('Theme Updated');
+    });
+
+    document.getElementById('simFiveYearCard').addEventListener('click', () => {
+      if (!hasProAccess()) {
+        document.getElementById('proModal').classList.add('open');
+        showToast('5-Year Projection is a Pro Feature');
+      }
+    });
+
+    document.getElementById('currencySelect').addEventListener('change', (e) => {
+      state.currency = e.target.value;
+      saveState();
+      renderAll();
+    });
+
+    document.getElementById('sortSelect').addEventListener('change', (e) => {
+      state.sortBy = e.target.value;
+      saveState();
+      renderList();
+    });
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      state.search = e.target.value;
+      renderList();
+    });
+
+    document.getElementById('categoryPills').addEventListener('click', (e) => {
+      const btn = e.target.closest('.pill');
+      if (!btn) return;
+      document.querySelectorAll('#categoryPills .pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      state.filterCat = btn.dataset.cat;
+      renderList();
+    });
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        document.getElementById(`tab-${tab}`).classList.add('active');
+      });
+    });
+
+    document.getElementById('resetSimBtn').addEventListener('click', () => {
+      state.simOffIds = [];
+      saveState();
+      renderAll();
+      showToast('Simulator Reset');
+    });
+
+    document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+      state.history = [];
+      saveState();
+      renderAll();
+      showToast('Payment Log Cleared');
+    });
+
+    document.getElementById('saveBudgetBtn').addEventListener('click', () => {
+      const val = parseFloat(document.getElementById('budgetInput').value);
+      if (val > 0) {
+        state.budget = val;
+        saveState();
+        renderAll();
+        showToast('Budget Updated');
+      }
+    });
+
+    document.getElementById('exportCsvBtn').addEventListener('click', () => {
+      if (!hasProAccess()) {
+        document.getElementById('proModal').classList.add('open');
+        showToast('CSV Export is a Pro Feature');
+        return;
+      }
+      const rows = [['Name', 'Amount', 'Cycle', 'Category', 'NextDate', 'Paused', 'Trial', 'EMIsLeft']];
+      state.items.forEach(i => rows.push([i.name, i.amount, i.cycle, i.category, i.nextDate, i.paused, i.isTrial, i.emisLeft]));
+      const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+      downloadFile('subpulse-export.csv', csv, 'text/csv');
+    });
+
+    document.getElementById('exportJsonBtn').addEventListener('click', () => {
+      if (!hasProAccess()) {
+        document.getElementById('proModal').classList.add('open');
+        showToast('JSON Backup is a Pro Feature');
+        return;
+      }
+      downloadFile('subpulse-backup.json', JSON.stringify(state, null, 2), 'application/json');
+    });
+
+    document.getElementById('importJsonInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          if (parsed && Array.isArray(parsed.items)) {
+            state = { ...state, ...parsed };
+            saveState();
+            renderAll();
+            showToast('Backup Restored');
+          }
+        } catch (err) {
+          showToast('Invalid JSON file');
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById('clearSampleBtn').addEventListener('click', () => {
+      state.items = [];
+      state.simOffIds = [];
+      saveState();
+      renderAll();
+      showToast('All Data Cleared');
+    });
+
+    function downloadFile(name, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    const PLAN_LABELS = {
+      subpulse_pro_monthly: 'Monthly Pro',
+      subpulse_pro_yearly: 'Yearly Pro',
+      subpulse_pro_lifetime: 'Lifetime Guardian'
+    };
+
+    document.getElementById('planGrid').addEventListener('click', (e) => {
+      const card = e.target.closest('.plan-card');
+      if (!card) return;
+      document.querySelectorAll('#planGrid .plan-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      state.selectedPlan = card.dataset.plan;
+      document.getElementById('subscribeNowBtn').textContent = `Continue with ${PLAN_LABELS[state.selectedPlan]}`;
+    });
+
+    function initPlayBilling() {
+      try {
+        if (typeof CdvPurchase === 'undefined' || !CdvPurchase.store) return;
+        const { store, ProductType, Platform } = CdvPurchase;
+        store.register([
+          { id: 'subpulse_pro_monthly', type: ProductType.PAID_SUBSCRIPTION, platform: Platform.GOOGLE_PLAY },
+          { id: 'subpulse_pro_yearly', type: ProductType.PAID_SUBSCRIPTION, platform: Platform.GOOGLE_PLAY },
+          { id: 'subpulse_pro_lifetime', type: ProductType.NON_CONSUMABLE, platform: Platform.GOOGLE_PLAY }
+        ]);
+        store.when().approved(transaction => transaction.verify());
+        store.when().verified(receipt => {
+          receipt.finish();
+          state.isPro = true;
+          state.activePlan = PLAN_LABELS[state.selectedPlan] || 'Guardian Pro';
+          saveState();
+          renderAll();
+          document.getElementById('proModal').classList.remove('open');
+          showToast('Pro Unlocked via Google Play!');
+        });
+        store.initialize([Platform.GOOGLE_PLAY]);
+      } catch (e) {}
+    }
+
+    function triggerSubscriptionPurchase() {
+      const planId = state.selectedPlan || 'subpulse_pro_yearly';
+      try {
+        if (typeof CdvPurchase !== 'undefined' && CdvPurchase.store) {
+          const product = CdvPurchase.store.get(planId);
+          const offer = product && product.getOffer();
+          if (offer) {
+            offer.order();
+            return;
+          }
+        }
+      } catch (e) {}
+      state.isPro = true;
+      state.activePlan = PLAN_LABELS[planId] + ' (Preview)';
+      saveState();
+      renderAll();
+      document.getElementById('proModal').classList.remove('open');
+      showToast(`${PLAN_LABELS[planId]} Activated!`);
+    }
+
+    function restorePlayPurchases() {
+      try {
+        if (typeof CdvPurchase !== 'undefined' && CdvPurchase.store) {
+          CdvPurchase.store.restorePurchases();
+          showToast('Checking Google Play purchases...');
+          return;
+        }
+      } catch (e) {}
+      showToast(state.isPro ? 'Pro is already active' : 'No prior purchase found in preview');
+    }
+
+    document.getElementById('openProBtn').addEventListener('click', () => document.getElementById('proModal').classList.add('open'));
+    document.getElementById('settingsProBtn').addEventListener('click', () => document.getElementById('proModal').classList.add('open'));
+    document.getElementById('closeProBtn').addEventListener('click', () => document.getElementById('proModal').classList.remove('open'));
+    document.getElementById('subscribeNowBtn').addEventListener('click', triggerSubscriptionPurchase);
+    document.getElementById('modalRestoreBtn').addEventListener('click', restorePlayPurchases);
+    document.getElementById('restorePurchasesBtn').addEventListener('click', restorePlayPurchases);
+    document.getElementById('expireTrialBtn').addEventListener('click', () => {
+      state.isPro = false;
+      state.trialStartDate = Date.now() - (8 * 86400000);
+      saveState();
+      renderAll();
+      showToast('Trial Expired Mode Active');
+    });
+    document.getElementById('resetFreeBtn').addEventListener('click', () => {
+      state.isPro = false;
+      state.activePlan = null;
+      state.trialStartDate = Date.now();
+      saveState();
+      renderAll();
+      showToast('7-Day Trial Restarted');
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+
+    document.addEventListener('deviceready', initPlayBilling, false);
+    populateCurrencies();
+    loadState();
+    renderAll();
+    setTimeout(hideSplash, 1700);
+  </script>
+</body>
+</html>
