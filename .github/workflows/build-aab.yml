@@ -1,1 +1,83 @@
+name: Build Signed Android AAB & APK
 
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Install dependencies and add Android platform
+        run: |
+          npm install
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+          npx cap sync android
+
+      - name: Enforce minSdkVersion 24, targetSdkVersion 35 & Custom Launcher Icon
+        run: |
+          cat << 'EOF' > android/variables.gradle
+          ext {
+              minSdkVersion = 24
+              compileSdkVersion = 35
+              targetSdkVersion = 35
+              androidxActivityVersion = '1.9.2'
+              androidxAppCompatVersion = '1.7.0'
+              androidxCoordinatorLayoutVersion = '1.2.0'
+              androidxCoreVersion = '1.13.1'
+              androidxFragmentVersion = '1.8.4'
+              coreSplashScreenVersion = '1.0.1'
+              androidxWebkitVersion = '1.12.1'
+              junitVersion = '4.13.2'
+              androidxJunitVersion = '1.2.1'
+              androidxEspressoCoreVersion = '3.6.1'
+              cordovaAndroidVersion = '10.1.1'
+          }
+          EOF
+          sed -i 's/minSdkVersion 22/minSdkVersion 24/g; s/minSdkVersion 23/minSdkVersion 24/g' android/app/build.gradle || true
+          rm -rf android/app/src/main/res/mipmap-anydpi-v26
+          for dir in android/app/src/main/res/mipmap-*; do
+            cp www/icon-512.png "$dir/ic_launcher.png"
+            cp www/icon-512.png "$dir/ic_launcher_round.png"
+            cp www/icon-512.png "$dir/ic_launcher_foreground.png"
+          done
+
+      - name: Build Signed AAB & Debug APK with Fixed Keystore
+        run: |
+          if [ ! -f "release-key.jks" ]; then
+            echo "ERROR: release-key.jks missing! Keep release-key.jks in repo root."
+            exit 1
+          fi
+          cd android
+          chmod +x gradlew
+          ./gradlew bundleRelease assembleDebug \
+            -Pandroid.injected.signing.store.file=../release-key.jks \
+            -Pandroid.injected.signing.store.password=subpulse123 \
+            -Pandroid.injected.signing.key.alias=subpulse \
+            -Pandroid.injected.signing.key.password=subpulse123
+
+      - name: Upload AAB & APK Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: subpulse-release-bundle
+          path: |
+            android/app/build/outputs/bundle/release/app-release.aab
+            android/app/build/outputs/apk/debug/app-debug.apk
+            upload_certificate.pem
