@@ -1,0 +1,6 @@
+{
+  "appId": "com.subpulse.billguardian",
+  "appName": "SubPulse: EMI & Bill Tracker",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
