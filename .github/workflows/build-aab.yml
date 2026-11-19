@@ -68,7 +68,7 @@ jobs:
           cd android
           chmod +x gradlew
           ./gradlew bundleRelease assembleDebug \
-            -Pandroid.injected.signing.store.file=../release-key.jks \
+            -Pandroid.injected.signing.store.file=${{ github.workspace }}/release-key.jks \
             -Pandroid.injected.signing.store.password=subpulse123 \
             -Pandroid.injected.signing.key.alias=subpulse \
             -Pandroid.injected.signing.key.password=subpulse123
