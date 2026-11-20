@@ -48,7 +48,6 @@
       min-height: 100dvh;
     }
 
-    /* Attractive Animated Splash Screen */
     .splash-screen {
       position: fixed;
       inset: 0;
@@ -86,53 +85,12 @@
       50% { transform: scale(1.06); box-shadow: 0 0 48px var(--emerald); }
     }
 
-    .splash-title {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: #FFFFFF;
-    }
-
-    .splash-sub {
-      font-size: 14px;
-      color: #94A3B8;
-      margin-top: 6px;
-      max-width: 280px;
-    }
-
-    .splash-bar {
-      width: 140px;
-      height: 4px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 22px;
-    }
-
-    .splash-fill {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--emerald), var(--accent-2));
-      animation: loadBar 1.5s ease-out forwards;
-      transform-origin: left;
-    }
-
-    @keyframes loadBar {
-      from { transform: scaleX(0.05); }
-      to { transform: scaleX(1); }
-    }
-
-    .splash-skip {
-      margin-top: 18px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: #F8FAFC;
-      padding: 7px 16px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
+    .splash-title { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; color: #FFFFFF; }
+    .splash-sub { font-size: 14px; color: #94A3B8; margin-top: 6px; max-width: 280px; }
+    .splash-bar { width: 140px; height: 4px; background: rgba(255,255,255,0.12); border-radius: 999px; overflow: hidden; margin-top: 22px; }
+    .splash-fill { width: 100%; height: 100%; background: linear-gradient(90deg, var(--emerald), var(--accent-2)); animation: loadBar 1.5s ease-out forwards; transform-origin: left; }
+    @keyframes loadBar { from { transform: scaleX(0.05); } to { transform: scaleX(1); } }
+    .splash-skip { margin-top: 18px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); color: #F8FAFC; padding: 7px 16px; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
     .app-shell {
       max-width: 720px;
@@ -140,746 +98,122 @@
       padding: calc(12px + var(--safe-top)) 14px calc(96px + var(--safe-bottom));
     }
 
-    /* Responsive Topbar - Never Clips or Overlaps on 360px Mobile */
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .brand { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+    .brand-logo { width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, var(--emerald), var(--accent-2)); display: grid; place-items: center; box-shadow: 0 6px 16px var(--emerald-dim); flex-shrink: 0; }
+    .brand-title { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; }
+    .brand-sub { font-size: 11px; color: var(--muted); white-space: nowrap; }
+    .top-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; margin-left: auto; }
+    .currency-select { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 6px 8px; font-size: 12px; font-weight: 600; cursor: pointer; width: 88px; }
+    .pro-pill { background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), var(--emerald-dim)); border: 1px solid rgba(245, 158, 11, 0.5); color: #FCD34D; border-radius: 999px; padding: 6px 10px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .pro-pill.active-pro { background: var(--emerald-dim); border-color: var(--emerald); color: var(--emerald); }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      flex-shrink: 0;
-    }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 14px; }
+    .hero-card { background: radial-gradient(circle at top right, var(--emerald-dim), transparent 58%), var(--hero-bg); border: 1px solid var(--emerald); }
+    .hero-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+    .hero-amount { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; margin: 4px 0; color: var(--text); }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; color: var(--muted); margin-top: 8px; }
+    .hero-meta strong { color: var(--emerald); }
+    .budget-bar-wrap { margin-top: 14px; }
+    .budget-bar-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .budget-track { height: 8px; background: rgba(148, 163, 184, 0.2); border-radius: 999px; overflow: hidden; }
+    .budget-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--emerald), var(--accent-2)); transition: width 0.3s ease; }
+    .budget-fill.warn { background: linear-gradient(90deg, var(--amber), var(--coral)); }
 
-    .brand-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--emerald), var(--accent-2));
-      display: grid;
-      place-items: center;
-      box-shadow: 0 6px 16px var(--emerald-dim);
-      flex-shrink: 0;
-    }
+    .insight-banner { background: linear-gradient(90deg, var(--sky-dim), var(--emerald-dim)); border: 1px solid var(--border); border-radius: 14px; padding: 11px 14px; font-size: 13px; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 16px 0 10px; }
+    .section-title { font-size: 15px; font-weight: 700; }
 
-    .brand-title {
-      font-size: 17px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-    }
+    .btn-primary { background: var(--emerald); color: var(--accent-text); border: none; border-radius: 12px; padding: 9px 14px; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; flex-shrink: 0; }
+    .btn-secondary { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 12px; padding: 9px 14px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .btn-danger { background: var(--coral-dim); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 10px; padding: 8px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
 
-    .brand-sub {
-      font-size: 11px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-      margin-left: auto;
-    }
-
-    .currency-select {
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 6px 8px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 88px;
-    }
-
-    .pro-pill {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), var(--emerald-dim));
-      border: 1px solid rgba(245, 158, 11, 0.5);
-      color: #FCD34D;
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .pro-pill.active-pro {
-      background: var(--emerald-dim);
-      border-color: var(--emerald);
-      color: var(--emerald);
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 15px;
-      margin-bottom: 14px;
-    }
-
-    .hero-card {
-      background: radial-gradient(circle at top right, var(--emerald-dim), transparent 58%), var(--hero-bg);
-      border: 1px solid var(--emerald);
-    }
-
-    .hero-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .hero-amount {
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin: 4px 0;
-      color: var(--text);
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 8px;
-    }
-
-    .hero-meta strong {
-      color: var(--emerald);
-    }
-
-    .budget-bar-wrap {
-      margin-top: 14px;
-    }
-
-    .budget-bar-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .budget-track {
-      height: 8px;
-      background: rgba(148, 163, 184, 0.2);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .budget-fill {
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--emerald), var(--accent-2));
-      transition: width 0.3s ease;
-    }
-
-    .budget-fill.warn {
-      background: linear-gradient(90deg, var(--amber), var(--coral));
-    }
-
-    .insight-banner {
-      background: linear-gradient(90deg, var(--sky-dim), var(--emerald-dim));
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 11px 14px;
-      font-size: 13px;
-      color: var(--text);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin: 16px 0 10px;
-    }
-
-    .section-title {
-      font-size: 15px;
-      font-weight: 700;
-    }
-
-    .btn-primary {
-      background: var(--emerald);
-      color: var(--accent-text);
-      border: none;
-      border-radius: 12px;
-      padding: 9px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .btn-secondary {
-      background: var(--surface-2);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 9px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .btn-danger {
-      background: var(--coral-dim);
-      color: #EF4444;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .upcoming-strip {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
-
+    .upcoming-strip { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
     .upcoming-strip::-webkit-scrollbar { display: none; }
+    .due-chip { min-width: 156px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; padding: 12px; flex-shrink: 0; }
+    .due-chip.urgent { border-color: rgba(245, 158, 11, 0.5); background: linear-gradient(180deg, rgba(245, 158, 11, 0.12), var(--surface-2)); }
+    .due-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--amber-dim); color: #F59E0B; margin-bottom: 6px; }
+    .due-badge.soon { background: var(--sky-dim); color: var(--sky); }
+    .due-badge.trial { background: var(--coral-dim); color: #EF4444; }
 
-    .due-chip {
-      min-width: 156px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      flex-shrink: 0;
-    }
+    .charts-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 580px) { .charts-grid { grid-template-columns: 1fr 1fr; } }
+    .donut-wrap { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+    .legend-list { flex: 1; display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+    .legend-item { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
-    .due-chip.urgent {
-      border-color: rgba(245, 158, 11, 0.5);
-      background: linear-gradient(180deg, rgba(245, 158, 11, 0.12), var(--surface-2));
-    }
-
-    .due-badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: var(--amber-dim);
-      color: #F59E0B;
-      margin-bottom: 6px;
-    }
-
-    .due-badge.soon {
-      background: var(--sky-dim);
-      color: var(--sky);
-    }
-
-    .due-badge.trial {
-      background: var(--coral-dim);
-      color: #EF4444;
-    }
-
-    .charts-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    @media (min-width: 580px) {
-      .charts-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    .donut-wrap {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-top: 8px;
-    }
-
-    .legend-list {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 12px;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-    }
-
-    .legend-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .filter-row {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .search-sort-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .search-input {
-      flex: 1;
-      min-width: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 14px;
-      color: var(--text);
-      font-size: 14px;
-    }
-
-    .sort-select {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px;
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .pills {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
+    .filter-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+    .search-sort-row { display: flex; gap: 8px; }
+    .search-input { flex: 1; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; color: var(--text); font-size: 14px; }
+    .sort-select { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px; color: var(--text); font-size: 13px; font-weight: 600; }
+    .pills { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
     .pills::-webkit-scrollbar { display: none; }
+    .pill { background: var(--surface); border: 1px solid var(--border); color: var(--muted); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+    .pill.active { background: var(--emerald-dim); border-color: var(--emerald); color: var(--emerald); }
 
-    .pill {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      border-radius: 999px;
-      padding: 7px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      white-space: nowrap;
-      cursor: pointer;
-    }
+    .sub-list { display: flex; flex-direction: column; gap: 10px; }
+    .sub-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 13px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .sub-item.paused { opacity: 0.58; }
+    .sub-left { display: flex; align-items: center; gap: 11px; min-width: 0; flex: 1; }
+    .sub-icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+    .sub-info { min-width: 0; }
+    .sub-name { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .tag-mini { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 6px; background: var(--coral-dim); color: #EF4444; }
+    .tag-emi { background: var(--amber-dim); color: #F59E0B; }
+    .sub-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .sub-note { font-size: 11px; color: var(--sky); margin-top: 2px; }
+    .sub-right { text-align: right; flex-shrink: 0; }
+    .sub-price { font-weight: 700; font-size: 15px; }
+    .sub-actions { display: flex; gap: 5px; justify-content: flex-end; margin-top: 6px; flex-wrap: wrap; }
+    .icon-btn { background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 600; cursor: pointer; }
+    .icon-btn.paid { color: var(--emerald); border-color: var(--emerald); }
 
-    .pill.active {
-      background: var(--emerald-dim);
-      border-color: var(--emerald);
-      color: var(--emerald);
-    }
-
-    .sub-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .sub-item {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 13px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .sub-item.paused {
-      opacity: 0.58;
-    }
-
-    .sub-left {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      min-width: 0;
-      flex: 1;
-    }
-
-    .sub-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      font-size: 18px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    .sub-info {
-      min-width: 0;
-    }
-
-    .sub-name {
-      font-weight: 700;
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .tag-mini {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 6px;
-      background: var(--coral-dim);
-      color: #EF4444;
-    }
-
-    .tag-emi {
-      background: var(--amber-dim);
-      color: #F59E0B;
-    }
-
-    .sub-meta {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .sub-right {
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .sub-price {
-      font-weight: 700;
-      font-size: 15px;
-    }
-
-    .sub-actions {
-      display: flex;
-      gap: 5px;
-      justify-content: flex-end;
-      margin-top: 6px;
-      flex-wrap: wrap;
-    }
-
-    .icon-btn {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      border-radius: 8px;
-      padding: 4px 8px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .icon-btn.paid {
-      color: var(--emerald);
-      border-color: var(--emerald);
-    }
-
-    .sim-summary {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .sim-stat {
-      background: var(--surface-2);
-      border-radius: 12px;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .sim-stat-val {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--emerald);
-    }
-
-    .sim-stat-lbl {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 46px;
-      height: 26px;
-      flex-shrink: 0;
-    }
-
+    .sim-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+    .sim-stat { background: var(--surface-2); border-radius: 12px; padding: 10px; text-align: center; }
+    .sim-stat-val { font-size: 16px; font-weight: 800; color: var(--emerald); }
+    .sim-stat-lbl { font-size: 11px; color: var(--muted); }
+    .switch { position: relative; display: inline-block; width: 46px; height: 26px; flex-shrink: 0; }
     .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background-color: #475569; transition: .25s; border-radius: 999px; }
+    .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .25s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--emerald); }
+    input:checked + .slider:before { transform: translateX(20px); }
 
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background-color: #475569;
-      transition: .25s;
-      border-radius: 999px;
-    }
+    .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+    .theme-chip { background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 12px; padding: 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text); font-size: 12px; font-weight: 600; text-align: left; }
+    .theme-chip.active { border-color: var(--emerald); background: var(--emerald-dim); }
+    .theme-swatch { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.3); }
 
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 20px;
-      width: 20px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .25s;
-      border-radius: 50%;
-    }
+    .plan-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 14px; }
+    .plan-card { background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+    .plan-card.selected { border-color: var(--emerald); background: linear-gradient(135deg, var(--emerald-dim), var(--surface-2)); }
 
-    input:checked + .slider {
-      background-color: var(--emerald);
-    }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 6px calc(8px + var(--safe-bottom)); z-index: 40; }
+    .nav-btn { background: none; border: none; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 12px; cursor: pointer; }
+    .nav-btn.active { color: var(--emerald); background: var(--emerald-dim); }
+    .nav-icon { font-size: 18px; line-height: 1; }
 
-    input:checked + .slider:before {
-      transform: translateX(20px);
-    }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(6px); display: none; align-items: flex-end; justify-content: center; z-index: 60; padding: 12px; }
+    .modal-backdrop.open { display: flex; }
+    @media (min-width: 560px) { .modal-backdrop { align-items: center; } }
+    .modal { width: 100%; max-width: 480px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px; max-height: 88dvh; overflow-y: auto; }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .preset-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .preset-btn { background: var(--surface-2); border: 1px solid var(--border); color: var(--text); border-radius: 999px; padding: 5px 10px; font-size: 12px; cursor: pointer; }
+    .form-group { margin-bottom: 12px; }
+    .form-label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; font-weight: 600; }
+    .form-control { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; color: var(--text); font-size: 14px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-    .theme-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .theme-chip {
-      background: var(--surface-2);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      color: var(--text);
-      font-size: 12px;
-      font-weight: 600;
-      text-align: left;
-    }
-
-    .theme-chip.active {
-      border-color: var(--emerald);
-      background: var(--emerald-dim);
-    }
-
-    .theme-swatch {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      border: 2px solid rgba(255,255,255,0.3);
-    }
-
-    .plan-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .plan-card {
-      background: var(--surface-2);
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-    }
-
-    .plan-card.selected {
-      border-color: var(--emerald);
-      background: linear-gradient(135deg, var(--emerald-dim), var(--surface-2));
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 6px calc(8px + var(--safe-bottom));
-      z-index: 40;
-    }
-
-    .nav-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-
-    .nav-btn.active {
-      color: var(--emerald);
-      background: var(--emerald-dim);
-    }
-
-    .nav-icon {
-      font-size: 18px;
-      line-height: 1;
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(2, 6, 23, 0.8);
-      backdrop-filter: blur(6px);
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 60;
-      padding: 12px;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
-
-    @media (min-width: 560px) {
-      .modal-backdrop { align-items: center; }
-    }
-
-    .modal {
-      width: 100%;
-      max-width: 480px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 18px;
-      max-height: 88dvh;
-      overflow-y: auto;
-    }
-
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .preset-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-
-    .preset-btn {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    .form-group {
-      margin-bottom: 12px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 5px;
-      font-weight: 600;
-    }
-
-    .form-control {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      color: var(--text);
-      font-size: 14px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .toast {
-      position: fixed;
-      top: calc(16px + var(--safe-top));
-      left: 50%;
-      transform: translateX(-50%) translateY(-20px);
-      background: #0F172A;
-      color: #F8FAFC;
-      border: 1px solid var(--emerald);
-      padding: 10px 16px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.25s ease;
-      z-index: 80;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    .toast { position: fixed; top: calc(16px + var(--safe-top)); left: 50%; transform: translateX(-50%) translateY(-20px); background: #0F172A; color: #F8FAFC; border: 1px solid var(--emerald); padding: 10px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.25s ease; z-index: 80; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
   </style>
 </head>
 <body>
-  <!-- ATTRACTIVE WELCOME SPLASH SCREEN -->
   <div id="splashScreen" class="splash-screen">
     <div class="splash-ring">
       <svg width="56" height="56" viewBox="0 0 64 64" fill="none" aria-hidden="true">
@@ -949,7 +283,7 @@
 
       <div class="section-head">
         <div class="section-title">Upcoming Renewals (14d)</div>
-        <button id="addBtnTop" class="btn-primary">+ Add New</button>
+        <button id="addBtnTop" class="btn-primary">+ Add Custom</button>
       </div>
       <div id="upcomingStrip" class="upcoming-strip"></div>
 
@@ -968,25 +302,19 @@
       </div>
 
       <div class="section-head">
-        <div class="section-title">All Tracked Bills &amp; Subscriptions</div>
+        <div class="section-title">All Tracked Bills &amp; EMIs</div>
+        <button id="clearSamplesQuickBtn" class="icon-btn" style="padding:6px 10px;">Clear All</button>
       </div>
       <div class="filter-row">
         <div class="search-sort-row">
-          <input id="searchInput" type="search" class="search-input" placeholder="Search Light, Gas, EMI, Netflix..." />
+          <input id="searchInput" type="search" class="search-input" placeholder="Search Light, Gas, EMI, custom..." />
           <select id="sortSelect" class="sort-select" aria-label="Sort">
             <option value="due">Soonest Due</option>
             <option value="high">Highest Cost</option>
             <option value="name">Name A–Z</option>
           </select>
         </div>
-        <div id="categoryPills" class="pills">
-          <button class="pill active" data-cat="All">All</button>
-          <button class="pill" data-cat="Utilities">Utilities</button>
-          <button class="pill" data-cat="EMI &amp; Loans">EMI &amp; Loans</button>
-          <button class="pill" data-cat="AI &amp; Work">AI &amp; Work</button>
-          <button class="pill" data-cat="Streaming">Streaming</button>
-          <button class="pill" data-cat="Fitness">Fitness</button>
-        </div>
+        <div id="categoryPills" class="pills"></div>
       </div>
       <div id="subList" class="sub-list"></div>
     </section>
@@ -1142,64 +470,67 @@
     </button>
   </nav>
 
-  <!-- ADD / EDIT MODAL -->
+  <!-- ADD / EDIT MODAL (100% CUSTOMIZABLE) -->
   <div id="itemModal" class="modal-backdrop">
     <div class="modal">
       <div class="modal-head">
-        <h3 id="modalTitle" style="font-size: 17px; font-weight: 700;">Add Subscription / EMI</h3>
+        <h3 id="modalTitle" style="font-size: 17px; font-weight: 700;">Add Custom Bill / EMI</h3>
         <button id="closeModalBtn" class="icon-btn">✕ Close</button>
       </div>
 
       <div class="preset-grid" id="presetGrid">
-        <button type="button" class="preset-btn" data-name="Light Bill (Electricity)" data-amt="1800" data-cat="Utilities">Light Bill</button>
-        <button type="button" class="preset-btn" data-name="Gas Bill" data-amt="950" data-cat="Utilities">Gas Bill</button>
-        <button type="button" class="preset-btn" data-name="Mobile Bill / Recharge" data-amt="599" data-cat="Utilities">Mobile Bill</button>
-        <button type="button" class="preset-btn" data-name="Wi-Fi Broadband" data-amt="999" data-cat="Utilities">Wi-Fi Bill</button>
-        <button type="button" class="preset-btn" data-name="Home Loan EMI" data-amt="22000" data-cat="EMI & Loans">Home Loan EMI</button>
-        <button type="button" class="preset-btn" data-name="Car EMI" data-amt="12500" data-cat="EMI & Loans">Car EMI</button>
-        <button type="button" class="preset-btn" data-name="Two-Wheeler EMI" data-amt="3800" data-cat="EMI & Loans">Two-Wheeler EMI</button>
-        <button type="button" class="preset-btn" data-name="House Rent" data-amt="15000" data-cat="Utilities">House Rent</button>
-        <button type="button" class="preset-btn" data-name="Health / Life Insurance" data-amt="12000" data-cat="EMI & Loans">Insurance</button>
-        <button type="button" class="preset-btn" data-name="Netflix" data-amt="649" data-cat="Streaming">Netflix</button>
-        <button type="button" class="preset-btn" data-name="ChatGPT Plus" data-amt="1950" data-cat="AI & Work">ChatGPT Plus</button>
+        <button type="button" class="preset-btn" data-name="Light Bill (Electricity)" data-amt="1800" data-cat="Utilities" data-cycle="bimonthly">Light Bill</button>
+        <button type="button" class="preset-btn" data-name="Gas Bill" data-amt="950" data-cat="Utilities" data-cycle="monthly">Gas Bill</button>
+        <button type="button" class="preset-btn" data-name="Mobile Bill" data-amt="599" data-cat="Utilities" data-cycle="monthly">Mobile Bill</button>
+        <button type="button" class="preset-btn" data-name="Home Loan EMI" data-amt="22000" data-cat="EMI & Loans" data-cycle="monthly">Home Loan EMI</button>
+        <button type="button" class="preset-btn" data-name="Car EMI" data-amt="12500" data-cat="EMI & Loans" data-cycle="monthly">Car EMI</button>
+        <button type="button" class="preset-btn" data-name="Two-Wheeler EMI" data-amt="3800" data-cat="EMI & Loans" data-cycle="monthly">Two-Wheeler EMI</button>
+        <button type="button" class="preset-btn" data-name="House Rent" data-amt="15000" data-cat="Utilities" data-cycle="monthly">House Rent</button>
+        <button type="button" class="preset-btn" data-name="Insurance" data-amt="12000" data-cat="EMI & Loans" data-cycle="yearly">Insurance</button>
+        <button type="button" class="preset-btn" data-name="Netflix" data-amt="649" data-cat="Streaming" data-cycle="monthly">Netflix</button>
       </div>
 
       <form id="subForm">
         <input type="hidden" id="editId" />
         <div class="form-group">
-          <label class="form-label" for="subName">Service or Bill Name</label>
-          <input id="subName" class="form-control" type="text" required placeholder="e.g. Light Bill, Car EMI, Netflix" />
+          <label class="form-label" for="subName">Custom Bill / EMI / Service Name</label>
+          <input id="subName" class="form-control" type="text" required placeholder="Type anything: Society Bill, Tuition, Gold EMI..." />
         </div>
         <div class="form-row">
           <div class="form-group">
             <label class="form-label" for="subAmount">Amount</label>
-            <input id="subAmount" class="form-control" type="number" min="1" step="0.01" required placeholder="649" />
+            <input id="subAmount" class="form-control" type="number" min="1" step="0.01" required placeholder="e.g. 1500" />
           </div>
           <div class="form-group">
             <label class="form-label" for="subCycle">Billing Cycle</label>
             <select id="subCycle" class="form-control">
               <option value="monthly">Monthly</option>
+              <option value="bimonthly">Every 2 Months</option>
+              <option value="quarterly">Quarterly (3 Mo)</option>
+              <option value="halfyearly">Half-Yearly (6 Mo)</option>
               <option value="yearly">Yearly</option>
-              <option value="quarterly">Quarterly</option>
               <option value="weekly">Weekly</option>
+              <option value="custom">Custom (Every N Days)</option>
             </select>
           </div>
+        </div>
+        <div id="customDaysGroup" class="form-group" style="display:none;">
+          <label class="form-label" for="subCustomDays">Repeat Every (Number of Days)</label>
+          <input id="subCustomDays" class="form-control" type="number" min="1" max="3650" placeholder="e.g. 28, 45, 84, 90" />
         </div>
         <div class="form-row">
           <div class="form-group">
             <label class="form-label" for="subCategory">Category</label>
-            <select id="subCategory" class="form-control">
-              <option value="Utilities">Utilities</option>
-              <option value="EMI & Loans">EMI &amp; Loans</option>
-              <option value="AI & Work">AI &amp; Work</option>
-              <option value="Streaming">Streaming</option>
-              <option value="Fitness">Fitness</option>
-            </select>
+            <select id="subCategory" class="form-control"></select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="subDate">Next Renewal Date</label>
+            <label class="form-label" for="subDate">Next Due Date</label>
             <input id="subDate" class="form-control" type="date" required />
           </div>
+        </div>
+        <div id="customCatGroup" class="form-group" style="display:none;">
+          <label class="form-label" for="subCustomCat">New Custom Category Name</label>
+          <input id="subCustomCat" class="form-control" type="text" placeholder="e.g. Education, SIP, Credit Card, Home" />
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -1210,6 +541,10 @@
             <input id="subTrial" type="checkbox" style="width:18px;height:18px;" />
             <label for="subTrial" style="font-size:13px;font-weight:600;cursor:pointer;">Free Trial Alert</label>
           </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="subNote">Custom Note / Consumer No. (Optional)</label>
+          <input id="subNote" class="form-control" type="text" placeholder="e.g. Torrent Power #4521 or HDFC Auto-Debit" />
         </div>
         <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px;">
           <button type="button" id="cancelModalBtn" class="btn-secondary">Cancel</button>
@@ -1273,7 +608,7 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'subpulse_state_v5';
+    const STORAGE_KEY = 'subpulse_state_v6';
     const FREE_LIMIT = 4;
     const TRIAL_DAYS = 7;
 
@@ -1319,13 +654,16 @@
       NZD: { symbol: 'NZ$', label: '🇳🇿 NZ$ NZD', locale: 'en-NZ' }
     };
 
-    const CAT_COLORS = {
-      'AI & Work': '#38BDF8',
-      'Streaming': '#A78BFA',
-      'EMI & Loans': '#F59E0B',
-      'Utilities': '#10B981',
-      'Fitness': '#FB7185'
-    };
+    const BASE_CATEGORIES = ['Utilities', 'EMI & Loans', 'AI & Work', 'Streaming', 'Fitness'];
+    const CAT_PALETTE = ['#10B981', '#F59E0B', '#38BDF8', '#A78BFA', '#FB7185', '#2DD4BF', '#F472B6', '#FACC15', '#818CF8'];
+
+    function getCatColor(cat) {
+      const idx = BASE_CATEGORIES.indexOf(cat);
+      if (idx >= 0) return CAT_PALETTE[idx];
+      let hash = 0;
+      for (let i = 0; i < String(cat).length; i++) hash = String(cat).charCodeAt(i) + ((hash << 5) - hash);
+      return CAT_PALETTE[Math.abs(hash) % CAT_PALETTE.length];
+    }
 
     function addDaysISO(days) {
       const d = new Date();
@@ -1333,19 +671,22 @@
       return d.toISOString().slice(0, 10);
     }
 
-    function advanceDateISO(dateStr, cycle) {
+    function advanceDateISO(dateStr, cycle, customDays) {
       const d = new Date(dateStr + 'T00:00:00');
       if (cycle === 'yearly') d.setFullYear(d.getFullYear() + 1);
+      else if (cycle === 'halfyearly') d.setMonth(d.getMonth() + 6);
       else if (cycle === 'quarterly') d.setMonth(d.getMonth() + 3);
+      else if (cycle === 'bimonthly') d.setMonth(d.getMonth() + 2);
       else if (cycle === 'weekly') d.setDate(d.getDate() + 7);
+      else if (cycle === 'custom') d.setDate(d.getDate() + Math.max(1, Number(customDays) || 30));
       else d.setMonth(d.getMonth() + 1);
       return d.toISOString().slice(0, 10);
     }
 
     const DEFAULT_ITEMS = [
-      { id: '1', name: 'ChatGPT Plus', amount: 1950, cycle: 'monthly', category: 'AI & Work', nextDate: addDaysISO(2), paused: false, isTrial: false, emisLeft: 0 },
-      { id: '2', name: 'Netflix 4K', amount: 649, cycle: 'monthly', category: 'Streaming', nextDate: addDaysISO(5), paused: false, isTrial: false, emisLeft: 0 },
-      { id: '3', name: 'Bike Loan EMI', amount: 4850, cycle: 'monthly', category: 'EMI & Loans', nextDate: addDaysISO(8), paused: false, isTrial: false, emisLeft: 9 }
+      { id: '1', name: 'ChatGPT Plus', amount: 1950, cycle: 'monthly', customDays: 30, category: 'AI & Work', nextDate: addDaysISO(2), paused: false, isTrial: false, emisLeft: 0, note: '' },
+      { id: '2', name: 'Netflix 4K', amount: 649, cycle: 'monthly', customDays: 30, category: 'Streaming', nextDate: addDaysISO(5), paused: false, isTrial: false, emisLeft: 0, note: '' },
+      { id: '3', name: 'Bike Loan EMI', amount: 4850, cycle: 'monthly', customDays: 30, category: 'EMI & Loans', nextDate: addDaysISO(8), paused: false, isTrial: false, emisLeft: 9, note: '' }
     ];
 
     let state = {
@@ -1359,6 +700,7 @@
       filterCat: 'All',
       sortBy: 'due',
       search: '',
+      customCategories: [],
       items: DEFAULT_ITEMS,
       history: [],
       simOffIds: []
@@ -1369,6 +711,31 @@
       sel.innerHTML = Object.entries(CURRENCIES)
         .map(([code, cfg]) => `<option value="${code}">${cfg.label}</option>`)
         .join('');
+    }
+
+    function getAllCategories() {
+      const set = new Set([...BASE_CATEGORIES, ...(state.customCategories || []), ...state.items.map(i => i.category).filter(Boolean)]);
+      return Array.from(set);
+    }
+
+    function populateCategoryDropdown(selectedCat) {
+      const sel = document.getElementById('subCategory');
+      const cats = getAllCategories();
+      sel.innerHTML = cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('') +
+        `<option value="__custom__">+ Custom Category...</option>`;
+      if (selectedCat && cats.includes(selectedCat)) {
+        sel.value = selectedCat;
+      }
+      document.getElementById('customCatGroup').style.display = sel.value === '__custom__' ? 'block' : 'none';
+    }
+
+    function renderCategoryPills() {
+      const wrap = document.getElementById('categoryPills');
+      const cats = ['All', ...getAllCategories()];
+      if (!cats.includes(state.filterCat)) state.filterCat = 'All';
+      wrap.innerHTML = cats.map(c =>
+        `<button class="pill ${state.filterCat === c ? 'active' : ''}" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`
+      ).join('');
     }
 
     function hideSplash() {
@@ -1444,9 +811,22 @@
     function toMonthly(item) {
       const amt = Number(item.amount) || 0;
       if (item.cycle === 'yearly') return amt / 12;
+      if (item.cycle === 'halfyearly') return amt / 6;
       if (item.cycle === 'quarterly') return amt / 3;
+      if (item.cycle === 'bimonthly') return amt / 2;
       if (item.cycle === 'weekly') return amt * 4.333;
+      if (item.cycle === 'custom') return amt * (30 / Math.max(1, Number(item.customDays) || 30));
       return amt;
+    }
+
+    function cycleShort(item) {
+      if (item.cycle === 'yearly') return 'yr';
+      if (item.cycle === 'halfyearly') return '6mo';
+      if (item.cycle === 'quarterly') return 'qtr';
+      if (item.cycle === 'bimonthly') return '2mo';
+      if (item.cycle === 'weekly') return 'wk';
+      if (item.cycle === 'custom') return `${item.customDays || 30}d`;
+      return 'mo';
     }
 
     function daysUntil(dateStr) {
@@ -1501,6 +881,7 @@
       fill.style.width = `${pct}%`;
       fill.classList.toggle('warn', pct >= 85);
 
+      renderCategoryPills();
       renderInsight(activeItems, monthlyTotal);
       renderUpcoming(activeItems);
       renderDonut(activeItems, monthlyTotal);
@@ -1513,7 +894,7 @@
     function renderInsight(activeItems, monthlyTotal) {
       const el = document.getElementById('insightText');
       if (!activeItems.length) {
-        el.textContent = 'Add your first subscription, light bill, or EMI to start tracking.';
+        el.textContent = 'Tap + Add Custom to add your own bills, EMIs, or custom categories.';
         return;
       }
       const trials = activeItems.filter(i => i.isTrial && daysUntil(i.nextDate) <= 7);
@@ -1546,7 +927,7 @@
           <div class="due-chip ${urgent ? 'urgent' : ''}">
             <span class="due-badge ${badgeClass}">${label}</span>
             <div style="font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(i.name)}</div>
-            <div style="font-size:13px;color:var(--muted);margin-top:2px;">${fmt(i.amount)} • ${i.cycle}</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:2px;">${fmt(i.amount)} / ${cycleShort(i)}</div>
           </div>
         `;
       }).join('');
@@ -1574,7 +955,7 @@
       entries.forEach(([cat, val]) => {
         const frac = val / monthlyTotal;
         const dash = frac * c;
-        const color = CAT_COLORS[cat] || '#10B981';
+        const color = getCatColor(cat);
         circles += `<circle cx="56" cy="56" r="${r}" fill="none" stroke="${color}" stroke-width="14" stroke-dasharray="${dash.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${(-offset).toFixed(2)}" transform="rotate(-90 56 56)" />`;
         offset += dash;
       });
@@ -1582,7 +963,7 @@
       svg.innerHTML = circles + `<text x="56" y="60" text-anchor="middle" fill="${t.fg}" font-size="12" font-weight="700">${entries.length} Cats</text>`;
 
       legend.innerHTML = entries.map(([cat, val]) => {
-        const color = CAT_COLORS[cat] || '#10B981';
+        const color = getCatColor(cat);
         const pct = Math.round((val / monthlyTotal) * 100);
         return `
           <div class="legend-item">
@@ -1624,7 +1005,7 @@
       const q = state.search.trim().toLowerCase();
       let filtered = state.items.filter(i => {
         const matchCat = state.filterCat === 'All' || i.category === state.filterCat;
-        const matchQ = !q || i.name.toLowerCase().includes(q) || i.category.toLowerCase().includes(q);
+        const matchQ = !q || i.name.toLowerCase().includes(q) || i.category.toLowerCase().includes(q) || (i.note || '').toLowerCase().includes(q);
         return matchCat && matchQ;
       });
 
@@ -1637,17 +1018,18 @@
       }
 
       if (!filtered.length) {
-        list.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">No matching bills. Tap <strong>+ Add New</strong> to track one.</div>`;
+        list.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">No matching bills. Tap <strong>+ Add Custom</strong> to add your own.</div>`;
         return;
       }
 
       list.innerHTML = filtered.map(i => {
-        const color = CAT_COLORS[i.category] || '#10B981';
+        const color = getCatColor(i.category);
         const initial = (i.name || '?').trim().charAt(0).toUpperCase();
         const days = daysUntil(i.nextDate);
         const dueText = days < 0 ? 'Overdue' : days === 0 ? 'Due Today' : `Due in ${days}d`;
         const trialBadge = i.isTrial ? `<span class="tag-mini">TRIAL</span>` : '';
         const emiBadge = i.emisLeft > 0 ? `<span class="tag-mini tag-emi">${i.emisLeft} EMIs left</span>` : '';
+        const noteHtml = i.note ? `<div class="sub-note">${escapeHtml(i.note)}</div>` : '';
         return `
           <div class="sub-item ${i.paused ? 'paused' : ''}">
             <div class="sub-left">
@@ -1655,10 +1037,11 @@
               <div class="sub-info">
                 <div class="sub-name">${escapeHtml(i.name)} ${trialBadge} ${emiBadge}</div>
                 <div class="sub-meta">${escapeHtml(i.category)} • ${dueText} (${i.nextDate})</div>
+                ${noteHtml}
               </div>
             </div>
             <div class="sub-right">
-              <div class="sub-price">${fmt(i.amount)}<span style="font-size:11px;color:var(--muted);font-weight:500;">/${i.cycle === 'yearly' ? 'yr' : i.cycle === 'quarterly' ? 'qtr' : i.cycle === 'weekly' ? 'wk' : 'mo'}</span></div>
+              <div class="sub-price">${fmt(i.amount)}<span style="font-size:11px;color:var(--muted);font-weight:500;">/${cycleShort(i)}</span></div>
               <div class="sub-actions">
                 <button class="icon-btn paid" onclick="markPaid('${i.id}')">✓ Paid</button>
                 <button class="icon-btn" onclick="exportCalendar('${i.id}')">📅</button>
@@ -1746,7 +1129,7 @@
         category: item.category,
         paidOn: new Date().toISOString().slice(0, 10)
       });
-      item.nextDate = advanceDateISO(item.nextDate, item.cycle);
+      item.nextDate = advanceDateISO(item.nextDate, item.cycle, item.customDays);
       if (item.emisLeft > 0) item.emisLeft = Math.max(0, item.emisLeft - 1);
       saveState();
       renderAll();
@@ -1765,7 +1148,7 @@
         `DTSTART;VALUE=DATE:${dt}`,
         `DTEND;VALUE=DATE:${dt}`,
         `SUMMARY:Renewal: ${item.name} (${fmt(item.amount)})`,
-        `DESCRIPTION:Tracked by SubPulse`,
+        `DESCRIPTION:${item.note || 'Tracked by SubPulse'}`,
         'END:VEVENT',
         'END:VCALENDAR'
       ].join('\r\n');
@@ -1806,15 +1189,18 @@
     window.openEdit = function(id) {
       const item = state.items.find(x => x.id === id);
       if (!item) return;
-      document.getElementById('modalTitle').textContent = 'Edit Tracker';
+      document.getElementById('modalTitle').textContent = 'Customize Bill / EMI';
       document.getElementById('editId').value = item.id;
       document.getElementById('subName').value = item.name;
       document.getElementById('subAmount').value = item.amount;
       document.getElementById('subCycle').value = item.cycle;
-      document.getElementById('subCategory').value = item.category;
+      document.getElementById('customDaysGroup').style.display = item.cycle === 'custom' ? 'block' : 'none';
+      document.getElementById('subCustomDays').value = item.customDays || 30;
+      populateCategoryDropdown(item.category);
       document.getElementById('subDate').value = item.nextDate;
       document.getElementById('subEmisLeft').value = item.emisLeft || '';
       document.getElementById('subTrial').checked = Boolean(item.isTrial);
+      document.getElementById('subNote').value = item.note || '';
       document.getElementById('itemModal').classList.add('open');
     };
 
@@ -1824,9 +1210,11 @@
         showToast('7-Day Trial ended — Upgrade to Pro for unlimited bills!');
         return;
       }
-      document.getElementById('modalTitle').textContent = 'Add Subscription / EMI';
+      document.getElementById('modalTitle').textContent = 'Add Custom Bill / EMI';
       document.getElementById('subForm').reset();
       document.getElementById('editId').value = '';
+      document.getElementById('customDaysGroup').style.display = 'none';
+      populateCategoryDropdown('Utilities');
       document.getElementById('subDate').value = addDaysISO(7);
       document.getElementById('itemModal').classList.add('open');
     }
@@ -1840,26 +1228,46 @@
     document.getElementById('closeModalBtn').addEventListener('click', closeItemModal);
     document.getElementById('cancelModalBtn').addEventListener('click', closeItemModal);
 
+    document.getElementById('subCycle').addEventListener('change', (e) => {
+      document.getElementById('customDaysGroup').style.display = e.target.value === 'custom' ? 'block' : 'none';
+    });
+
+    document.getElementById('subCategory').addEventListener('change', (e) => {
+      document.getElementById('customCatGroup').style.display = e.target.value === '__custom__' ? 'block' : 'none';
+    });
+
     document.getElementById('presetGrid').addEventListener('click', (e) => {
       const btn = e.target.closest('.preset-btn');
       if (!btn) return;
       document.getElementById('subName').value = btn.dataset.name;
       document.getElementById('subAmount').value = btn.dataset.amt;
-      document.getElementById('subCategory').value = btn.dataset.cat;
+      document.getElementById('subCycle').value = btn.dataset.cycle || 'monthly';
+      document.getElementById('customDaysGroup').style.display = 'none';
+      populateCategoryDropdown(btn.dataset.cat);
     });
 
     document.getElementById('subForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const id = document.getElementById('editId').value;
+      let cat = document.getElementById('subCategory').value;
+      if (cat === '__custom__') {
+        const typed = document.getElementById('subCustomCat').value.trim();
+        cat = typed || 'Custom';
+        if (!state.customCategories.includes(cat)) state.customCategories.push(cat);
+      }
+      const cycle = document.getElementById('subCycle').value;
+      const customDays = Math.max(1, parseInt(document.getElementById('subCustomDays').value, 10) || 30);
       const payload = {
         id: id || String(Date.now()),
         name: document.getElementById('subName').value.trim(),
         amount: parseFloat(document.getElementById('subAmount').value) || 0,
-        cycle: document.getElementById('subCycle').value,
-        category: document.getElementById('subCategory').value,
+        cycle,
+        customDays,
+        category: cat,
         nextDate: document.getElementById('subDate').value,
         emisLeft: parseInt(document.getElementById('subEmisLeft').value, 10) || 0,
         isTrial: document.getElementById('subTrial').checked,
+        note: document.getElementById('subNote').value.trim(),
         paused: false
       };
       if (id) {
@@ -1910,9 +1318,8 @@
     document.getElementById('categoryPills').addEventListener('click', (e) => {
       const btn = e.target.closest('.pill');
       if (!btn) return;
-      document.querySelectorAll('#categoryPills .pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
       state.filterCat = btn.dataset.cat;
+      renderCategoryPills();
       renderList();
     });
 
@@ -1956,8 +1363,8 @@
         showToast('CSV Export is a Pro Feature');
         return;
       }
-      const rows = [['Name', 'Amount', 'Cycle', 'Category', 'NextDate', 'Paused', 'Trial', 'EMIsLeft']];
-      state.items.forEach(i => rows.push([i.name, i.amount, i.cycle, i.category, i.nextDate, i.paused, i.isTrial, i.emisLeft]));
+      const rows = [['Name', 'Amount', 'Cycle', 'CustomDays', 'Category', 'NextDate', 'Paused', 'Trial', 'EMIsLeft', 'Note']];
+      state.items.forEach(i => rows.push([i.name, i.amount, i.cycle, i.customDays || '', i.category, i.nextDate, i.paused, i.isTrial, i.emisLeft, i.note || '']));
       const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
       downloadFile('subpulse-export.csv', csv, 'text/csv');
     });
@@ -1991,13 +1398,16 @@
       reader.readAsText(file);
     });
 
-    document.getElementById('clearSampleBtn').addEventListener('click', () => {
+    function clearAllBills() {
       state.items = [];
       state.simOffIds = [];
       saveState();
       renderAll();
-      showToast('All Data Cleared');
-    });
+      showToast('All Bills Cleared');
+    }
+
+    document.getElementById('clearSampleBtn').addEventListener('click', clearAllBills);
+    document.getElementById('clearSamplesQuickBtn').addEventListener('click', clearAllBills);
 
     function downloadFile(name, content, type) {
       const blob = new Blob([content], { type });
@@ -2024,6 +1434,10 @@
       document.getElementById('subscribeNowBtn').textContent = `Continue with ${PLAN_LABELS[state.selectedPlan]}`;
     });
 
+    function isNativeAndroid() {
+      return Boolean(window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform());
+    }
+
     function initPlayBilling() {
       try {
         if (typeof CdvPurchase === 'undefined' || !CdvPurchase.store) return;
@@ -2049,16 +1463,31 @@
 
     function triggerSubscriptionPurchase() {
       const planId = state.selectedPlan || 'subpulse_pro_yearly';
+      const nativeApp = isNativeAndroid();
       try {
         if (typeof CdvPurchase !== 'undefined' && CdvPurchase.store) {
-          const product = CdvPurchase.store.get(planId);
-          const offer = product && product.getOffer();
+          const { store, Platform } = CdvPurchase;
+          const product = store.get(planId, Platform.GOOGLE_PLAY) || store.get(planId);
+          const offer = product && (product.getOffer() || (product.offers && product.offers[0]));
           if (offer) {
             offer.order();
             return;
           }
+          if (nativeApp) {
+            store.update();
+            showToast('Loading Google Play plan... please try again in a moment');
+            return;
+          }
+        } else if (nativeApp) {
+          showToast('Google Play Billing unavailable. Please update Play Store.');
+          return;
         }
-      } catch (e) {}
+      } catch (e) {
+        if (nativeApp) {
+          showToast('Payment error. Please try again.');
+          return;
+        }
+      }
       state.isPro = true;
       state.activePlan = PLAN_LABELS[planId] + ' (Preview)';
       saveState();
