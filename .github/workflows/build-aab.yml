@@ -31,7 +31,7 @@ jobs:
           fi
           npx cap sync android
 
-      - name: Enforce minSdkVersion 24, targetSdkVersion 36 & Custom Launcher Icon
+      - name: Enforce minSdkVersion 24, targetSdkVersion 36, Auto VersionCode & Icon
         run: |
           cat << 'EOF' > android/variables.gradle
           ext {
@@ -52,6 +52,8 @@ jobs:
           }
           EOF
           sed -i 's/minSdkVersion 22/minSdkVersion 24/g; s/minSdkVersion 23/minSdkVersion 24/g' android/app/build.gradle || true
+          sed -i "s/versionCode 1/versionCode ${{ github.run_number }}/g" android/app/build.gradle || true
+          sed -i "s/versionName \"1.0\"/versionName \"1.0.${{ github.run_number }}\"/g" android/app/build.gradle || true
           rm -rf android/app/src/main/res/mipmap-anydpi-v26
           for dir in android/app/src/main/res/mipmap-*; do
             cp www/icon-512.png "$dir/ic_launcher.png"
