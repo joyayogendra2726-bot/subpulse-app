@@ -31,12 +31,7 @@
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     html, body {
       background: var(--bg);
@@ -49,42 +44,23 @@
     }
 
     .splash-screen {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: radial-gradient(circle at 50% 35%, var(--emerald-dim), #060911 72%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 120;
-      padding: 24px;
-      text-align: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 120; padding: 24px; text-align: center;
       transition: opacity 0.45s ease, visibility 0.45s ease;
     }
-
-    .splash-screen.hide {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
+    .splash-screen.hide { opacity: 0; visibility: hidden; pointer-events: none; }
     .splash-ring {
-      width: 96px;
-      height: 96px;
-      border-radius: 28px;
+      width: 96px; height: 96px; border-radius: 28px;
       background: linear-gradient(135deg, var(--emerald), var(--accent-2));
-      display: grid;
-      place-items: center;
-      box-shadow: 0 0 40px var(--emerald-dim);
-      animation: pulseGlow 1.6s ease-in-out infinite;
-      margin-bottom: 18px;
+      display: grid; place-items: center; box-shadow: 0 0 40px var(--emerald-dim);
+      animation: pulseGlow 1.6s ease-in-out infinite; margin-bottom: 18px;
     }
-
     @keyframes pulseGlow {
       0%, 100% { transform: scale(1); box-shadow: 0 0 24px var(--emerald-dim); }
       50% { transform: scale(1.06); box-shadow: 0 0 48px var(--emerald); }
     }
-
     .splash-title { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; color: #FFFFFF; }
     .splash-sub { font-size: 14px; color: #94A3B8; margin-top: 6px; max-width: 280px; }
     .splash-bar { width: 140px; height: 4px; background: rgba(255,255,255,0.12); border-radius: 999px; overflow: hidden; margin-top: 22px; }
@@ -92,12 +68,7 @@
     @keyframes loadBar { from { transform: scaleX(0.05); } to { transform: scaleX(1); } }
     .splash-skip { margin-top: 18px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); color: #F8FAFC; padding: 7px 16px; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
-    .app-shell {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: calc(12px + var(--safe-top)) 14px calc(96px + var(--safe-bottom));
-    }
-
+    .app-shell { max-width: 720px; margin: 0 auto; padding: calc(12px + var(--safe-top)) 14px calc(96px + var(--safe-bottom)); }
     .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
     .brand { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
     .brand-logo { width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, var(--emerald), var(--accent-2)); display: grid; place-items: center; box-shadow: 0 6px 16px var(--emerald-dim); flex-shrink: 0; }
@@ -114,7 +85,27 @@
     .hero-amount { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; margin: 4px 0; color: var(--text); }
     .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; color: var(--muted); margin-top: 8px; }
     .hero-meta strong { color: var(--emerald); }
-    .budget-bar-wrap { margin-top: 14px; }
+
+    /* Safe-to-Spend Daily Meter */
+    .safe-card {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(56, 189, 248, 0.08));
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: var(--radius);
+      padding: 14px 15px;
+      margin-bottom: 14px;
+    }
+    .safe-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .safe-val { font-size: 26px; font-weight: 800; color: var(--emerald); }
+    .safe-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* 50/30/20 Bar */
+    .rule-bar { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: rgba(148, 163, 184, 0.2); margin: 10px 0 8px; }
+    .rule-needs { background: var(--sky); }
+    .rule-wants { background: var(--violet); }
+    .rule-save { background: var(--emerald); }
+    .rule-legend { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); flex-wrap: wrap; gap: 6px; }
+
+    .budget-bar-wrap { margin-top: 12px; }
     .budget-bar-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
     .budget-track { height: 8px; background: rgba(148, 163, 184, 0.2); border-radius: 999px; overflow: hidden; }
     .budget-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--emerald), var(--accent-2)); transition: width 0.3s ease; }
@@ -153,19 +144,21 @@
     .pill.active { background: var(--emerald-dim); border-color: var(--emerald); color: var(--emerald); }
 
     .sub-list { display: flex; flex-direction: column; gap: 10px; }
-    .sub-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 13px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .sub-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 13px 14px; display: flex; flex-direction: column; gap: 10px; }
+    .sub-item.row-item { flex-direction: row; align-items: center; justify-content: space-between; }
     .sub-item.paused { opacity: 0.58; }
+    .sub-top-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; width: 100%; }
     .sub-left { display: flex; align-items: center; gap: 11px; min-width: 0; flex: 1; }
     .sub-icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 18px; font-weight: 700; flex-shrink: 0; }
-    .sub-info { min-width: 0; }
-    .sub-name { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .sub-info { min-width: 0; flex: 1; }
+    .sub-name { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; word-break: break-word; }
     .tag-mini { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 6px; background: var(--coral-dim); color: #EF4444; }
     .tag-emi { background: var(--amber-dim); color: #F59E0B; }
-    .sub-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .sub-meta { font-size: 12px; color: var(--muted); margin-top: 3px; word-break: break-word; }
     .sub-note { font-size: 11px; color: var(--sky); margin-top: 2px; }
     .sub-right { text-align: right; flex-shrink: 0; }
-    .sub-price { font-weight: 700; font-size: 15px; }
-    .sub-actions { display: flex; gap: 5px; justify-content: flex-end; margin-top: 6px; flex-wrap: wrap; }
+    .sub-price { font-weight: 800; font-size: 15px; white-space: nowrap; }
+    .sub-actions { display: flex; gap: 6px; justify-content: flex-start; padding-top: 8px; border-top: 1px solid var(--border); flex-wrap: wrap; width: 100%; }
     .icon-btn { background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 600; cursor: pointer; }
     .icon-btn.paid { color: var(--emerald); border-color: var(--emerald); }
 
@@ -189,10 +182,10 @@
     .plan-card { background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
     .plan-card.selected { border-color: var(--emerald); background: linear-gradient(135deg, var(--emerald-dim), var(--surface-2)); }
 
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 6px calc(8px + var(--safe-bottom)); z-index: 40; }
-    .nav-btn { background: none; border: none; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 12px; cursor: pointer; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 4px calc(8px + var(--safe-bottom)); z-index: 40; }
+    .nav-btn { background: none; border: none; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10.5px; font-weight: 600; padding: 6px 8px; border-radius: 12px; cursor: pointer; }
     .nav-btn.active { color: var(--emerald); background: var(--emerald-dim); }
-    .nav-icon { font-size: 18px; line-height: 1; }
+    .nav-icon { font-size: 17px; line-height: 1; }
 
     .modal-backdrop { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(6px); display: none; align-items: flex-end; justify-content: center; z-index: 60; padding: 12px; }
     .modal-backdrop.open { display: flex; }
@@ -208,6 +201,19 @@
 
     .toast { position: fixed; top: calc(16px + var(--safe-top)); left: 50%; transform: translateX(-50%) translateY(-20px); background: #0F172A; color: #F8FAFC; border: 1px solid var(--emerald); padding: 10px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.25s ease; z-index: 80; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .pin-overlay {
+      position: fixed; inset: 0; background: var(--bg); z-index: 110;
+      display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center;
+    }
+    .pin-overlay.open { display: flex; }
+    .pin-dots { display: flex; gap: 14px; margin: 18px 0 24px; }
+    .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--emerald); background: transparent; transition: .15s; }
+    .pin-dot.filled { background: var(--emerald); }
+    .pin-pad { display: grid; grid-template-columns: repeat(3, 72px); gap: 12px; }
+    .pin-key { height: 60px; border-radius: 16px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); font-size: 22px; font-weight: 700; cursor: pointer; }
+    .sms-box { background: var(--surface-2); border: 1px dashed var(--emerald); border-radius: 12px; padding: 10px; margin-bottom: 12px; }
+    .sms-row { display: flex; gap: 6px; margin-top: 6px; }
 
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
@@ -225,9 +231,26 @@
       </svg>
     </div>
     <div class="splash-title">SubPulse</div>
-    <div class="splash-sub">Global EMI, Bill &amp; Subscription Tracker</div>
+    <div class="splash-sub">Smart Money, EMI &amp; Bill Guardian</div>
     <div class="splash-bar"><div class="splash-fill"></div></div>
     <button id="skipSplashBtn" class="splash-skip">Enter Dashboard →</button>
+  </div>
+
+  
+  <!-- 4-DIGIT APP PIN LOCK -->
+  <div id="pinOverlay" class="pin-overlay">
+    <div style="font-size:36px;margin-bottom:8px;">🔐</div>
+    <h2 style="font-size:20px;font-weight:800;">SubPulse Locked</h2>
+    <p id="pinHint" style="font-size:13px;color:var(--muted);margin-top:4px;">Enter your 4-digit PIN to unlock</p>
+    <div class="pin-dots" id="pinDots">
+      <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+    </div>
+    <div class="pin-pad" id="pinPad">
+      <button class="pin-key" data-k="1">1</button><button class="pin-key" data-k="2">2</button><button class="pin-key" data-k="3">3</button>
+      <button class="pin-key" data-k="4">4</button><button class="pin-key" data-k="5">5</button><button class="pin-key" data-k="6">6</button>
+      <button class="pin-key" data-k="7">7</button><button class="pin-key" data-k="8">8</button><button class="pin-key" data-k="9">9</button>
+      <button class="pin-key" data-k="clr" style="font-size:14px;">Clear</button><button class="pin-key" data-k="0">0</button><button class="pin-key" data-k="del" style="font-size:16px;">⌫</button>
+    </div>
   </div>
 
   <div id="toast" class="toast">Saved</div>
@@ -257,13 +280,25 @@
 
     <!-- DASHBOARD TAB -->
     <section id="tab-dashboard" class="tab-pane active">
+      <!-- SAFE-TO-SPEND DAILY METER -->
+      <div class="safe-card">
+        <div class="safe-top">
+          <div>
+            <div class="hero-label">Safe-to-Spend Today</div>
+            <div id="safeDailyAmount" class="safe-val">₹0 / day</div>
+          </div>
+          <button id="editIncomeBtn" class="icon-btn" style="padding:6px 10px;">Set Income</button>
+        </div>
+        <div id="safeSubText" class="safe-sub">After fixed bills, EMIs &amp; savings goal</div>
+      </div>
+
       <div class="card hero-card">
-        <div class="hero-label">Monthly Recurring Burn</div>
+        <div class="hero-label">Monthly Fixed Bills &amp; EMIs</div>
         <div id="monthlyBurn" class="hero-amount">₹0</div>
         <div class="hero-meta">
           <span>Yearly: <strong id="yearlyBurn">₹0</strong></span>
           <span>Active: <strong id="activeCount">0</strong></span>
-          <span>Daily Avg: <strong id="dailyBurn">₹0</strong></span>
+          <span>Daily Log: <strong id="dailySpentTotal">₹0</strong></span>
         </div>
         <div class="budget-bar-wrap">
           <div class="budget-bar-labels">
@@ -283,7 +318,10 @@
 
       <div class="section-head">
         <div class="section-title">Upcoming Renewals (14d)</div>
-        <button id="addBtnTop" class="btn-primary">+ Add Custom</button>
+        <div style="display:flex;gap:6px;">
+          <button id="quickExpenseBtn" class="btn-secondary" style="padding:8px 11px;">+ Expense</button>
+          <button id="addBtnTop" class="btn-primary">+ Bill/EMI</button>
+        </div>
       </div>
       <div id="upcomingStrip" class="upcoming-strip"></div>
 
@@ -303,7 +341,10 @@
 
       <div class="section-head">
         <div class="section-title">All Tracked Bills &amp; EMIs</div>
-        <button id="clearSamplesQuickBtn" class="icon-btn" style="padding:6px 10px;">Clear All</button>
+        <div style="display:flex;gap:6px;">
+          <button id="pdfReportBtn" class="icon-btn" style="padding:6px 10px;">📊 Report</button>
+          <button id="clearSamplesQuickBtn" class="icon-btn" style="padding:6px 10px;">Clear All</button>
+        </div>
       </div>
       <div class="filter-row">
         <div class="search-sort-row">
@@ -319,13 +360,90 @@
       <div id="subList" class="sub-list"></div>
     </section>
 
-    <!-- SIMULATOR (CUT) TAB -->
+    <!-- DAILY EXPENSE QUICK-LOG + 50/30/20 TAB -->
+    <section id="tab-daily" class="tab-pane">
+      <div class="card hero-card">
+        <div class="hero-label">This Month's Daily Expenses</div>
+        <div class="hero-amount" id="dailyTabTotal">₹0</div>
+        <div class="hero-meta">
+          <span>Entries: <strong id="dailyEntryCount">0</strong></span>
+          <span>50/30/20 Health Score</span>
+        </div>
+        <div class="rule-bar">
+          <div id="ruleNeedsBar" class="rule-needs" style="width:50%;"></div>
+          <div id="ruleWantsBar" class="rule-wants" style="width:30%;"></div>
+          <div id="ruleSaveBar" class="rule-save" style="width:20%;"></div>
+        </div>
+        <div class="rule-legend">
+          <span id="ruleNeedsTxt">🔵 Needs: 0%</span>
+          <span id="ruleWantsTxt">🟣 Wants: 0%</span>
+          <span id="ruleSaveTxt">🟢 Savings: 0%</span>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div class="section-title">Daily Spend Log</div>
+        <button id="addDailyBtn" class="btn-primary">+ Log Spend</button>
+      </div>
+      <div id="dailyList" class="sub-list"></div>
+
+      <div class="section-head" style="margin-top:20px;">
+        <div class="section-title" id="goalsTitle">🎯 Savings Goal Jars</div>
+        <button id="addGoalBtn" class="btn-secondary" style="padding:8px 12px;">+ New Goal</button>
+      </div>
+      <div id="goalList" class="sub-list"></div>
+
+    </section>
+
+    <!-- CUT & EMI SAVER TAB -->
     <section id="tab-simulator" class="tab-pane">
+      <!-- LOAN EMI INTEREST-SAVER CALCULATOR -->
+      <div class="card" style="border-color: rgba(245,158,11,0.45);">
+        <div class="section-head" style="margin-top:0;">
+          <div class="section-title">🏦 Loan EMI Interest-Saver</div>
+          <span class="tag-mini tag-emi">PRO</span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="loanPrincipal">Loan Amount</label>
+            <input id="loanPrincipal" class="form-control" type="number" value="500000" min="1000" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="loanRate">Interest (% / yr)</label>
+            <input id="loanRate" class="form-control" type="number" value="9.5" step="0.1" min="1" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="loanMonths">Tenure (Months)</label>
+            <input id="loanMonths" class="form-control" type="number" value="60" min="6" max="360" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="loanExtra">Extra Pay / Month</label>
+            <input id="loanExtra" class="form-control" type="number" value="2000" min="0" step="500" />
+          </div>
+        </div>
+        <div class="sim-summary" style="margin-top:4px;">
+          <div class="sim-stat">
+            <div class="sim-stat-val" id="emiRegularVal">₹0</div>
+            <div class="sim-stat-lbl">Monthly EMI</div>
+          </div>
+          <div class="sim-stat">
+            <div class="sim-stat-val" id="emiInterestSaved" style="color:var(--amber);">₹0</div>
+            <div class="sim-stat-lbl">Interest Saved</div>
+          </div>
+          <div class="sim-stat">
+            <div class="sim-stat-val" id="emiMonthsSaved">0 mo</div>
+            <div class="sim-stat-lbl">Loan Ends Early</div>
+          </div>
+        </div>
+      </div>
+
       <div class="card hero-card">
         <div class="hero-label">What-If Cut &amp; Savings Simulator</div>
         <div class="hero-amount" id="simYearlySaved">₹0 / yr</div>
         <p style="font-size: 13px; color: var(--muted); margin-top: 4px;">
-          All your added bills &amp; EMIs appear below. Toggle OFF any item to see how much you save.
+          Toggle OFF any bill or subscription below to see your real savings.
         </p>
         <div class="sim-summary">
           <div class="sim-stat">
@@ -367,51 +485,64 @@
 
     <!-- SETTINGS TAB -->
     <section id="tab-settings" class="tab-pane">
+      
+      <div class="card">
+        <div class="section-title" style="margin-bottom: 10px;">🌐 Language &amp; 🔐 App PIN Lock</div>
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" for="langSelect">App Language</label>
+            <select id="langSelect" class="form-control">
+              <option value="en">English</option>
+              <option value="gu">ગુજરાતી (Gujarati)</option>
+              <option value="hi">हिन्दी (Hindi)</option>
+              <option value="es">Español (Spanish)</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" for="pinInput">4-Digit PIN (Optional)</label>
+            <div style="display:flex;gap:6px;">
+              <input id="pinInput" class="form-control" type="password" inputmode="numeric" maxlength="4" placeholder="e.g. 1234" />
+              <button id="savePinBtn" class="btn-primary" style="padding:8px 12px;">Set</button>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+          <span id="pinStatusTxt" style="font-size:12px;color:var(--muted);">PIN Lock: Off</span>
+          <button id="disablePinBtn" class="icon-btn" style="display:none;">Turn Off PIN</button>
+        </div>
+      </div>
+
       <div class="card">
         <div class="section-title">App Colour Theme Studio (8 Themes)</div>
         <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">
           Tap any dark or light theme to transform the entire app:
         </p>
         <div id="themeGrid" class="theme-grid">
-          <button type="button" class="theme-chip active" data-theme="emerald">
-            <span class="theme-swatch" style="background: linear-gradient(135deg,#10B981,#38BDF8);"></span>
-            <span>Emerald Mint</span>
-          </button>
-          <button type="button" class="theme-chip" data-theme="sky">
-            <span class="theme-swatch" style="background: linear-gradient(135deg,#38BDF8,#818CF8);"></span>
-            <span>Electric Sky</span>
-          </button>
-          <button type="button" class="theme-chip" data-theme="gold">
-            <span class="theme-swatch" style="background: linear-gradient(135deg,#F59E0B,#FDE047);"></span>
-            <span>Royal Gold</span>
-          </button>
-          <button type="button" class="theme-chip" data-theme="violet">
-            <span class="theme-swatch" style="background: linear-gradient(135deg,#A78BFA,#F472B6);"></span>
-            <span>Neon Violet</span>
-          </button>
-          <button type="button" class="theme-chip" data-theme="rose">
-            <span class="theme-swatch" style="background: linear-gradient(135deg,#FB7185,#FB923C);"></span>
-            <span>Crimson Pulse</span>
-          </button>
-          <button type="button" class="theme-chip" data-theme="cyber">
-            <span class="theme-swatch" style="background: linear-gradient(135deg,#2DD4BF,#06B6D4);"></span>
-            <span>Cyber Teal</span>
-          </button>
-          <button type="button" class="theme-chip" data-theme="amoled">
-            <span class="theme-swatch" style="background: linear-gradient(135deg,#22C55E,#000000);"></span>
-            <span>AMOLED Black</span>
-          </button>
-          <button type="button" class="theme-chip" data-theme="light">
-            <span class="theme-swatch" style="background: linear-gradient(135deg,#FFFFFF,#10B981);"></span>
-            <span>Clean Light</span>
-          </button>
+          <button type="button" class="theme-chip active" data-theme="emerald"><span class="theme-swatch" style="background: linear-gradient(135deg,#10B981,#38BDF8);"></span><span>Emerald Mint</span></button>
+          <button type="button" class="theme-chip" data-theme="sky"><span class="theme-swatch" style="background: linear-gradient(135deg,#38BDF8,#818CF8);"></span><span>Electric Sky</span></button>
+          <button type="button" class="theme-chip" data-theme="gold"><span class="theme-swatch" style="background: linear-gradient(135deg,#F59E0B,#FDE047);"></span><span>Royal Gold</span></button>
+          <button type="button" class="theme-chip" data-theme="violet"><span class="theme-swatch" style="background: linear-gradient(135deg,#A78BFA,#F472B6);"></span><span>Neon Violet</span></button>
+          <button type="button" class="theme-chip" data-theme="rose"><span class="theme-swatch" style="background: linear-gradient(135deg,#FB7185,#FB923C);"></span><span>Crimson Pulse</span></button>
+          <button type="button" class="theme-chip" data-theme="cyber"><span class="theme-swatch" style="background: linear-gradient(135deg,#2DD4BF,#06B6D4);"></span><span>Cyber Teal</span></button>
+          <button type="button" class="theme-chip" data-theme="amoled"><span class="theme-swatch" style="background: linear-gradient(135deg,#22C55E,#000000);"></span><span>AMOLED Black</span></button>
+          <button type="button" class="theme-chip" data-theme="light"><span class="theme-swatch" style="background: linear-gradient(135deg,#FFFFFF,#10B981);"></span><span>Clean Light</span></button>
         </div>
       </div>
 
       <div class="card">
-        <div class="section-title" style="margin-bottom: 10px;">Monthly Budget Target</div>
+        <div class="section-title" style="margin-bottom: 10px;">Income, Savings &amp; Budget</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="incomeInput">Monthly Income</label>
+            <input id="incomeInput" type="number" class="form-control" min="0" step="500" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="savingsGoalInput">Savings Goal</label>
+            <input id="savingsGoalInput" type="number" class="form-control" min="0" step="500" />
+          </div>
+        </div>
         <div class="form-group" style="margin-bottom:0;">
-          <label class="form-label" for="budgetInput">Alert threshold in selected currency</label>
+          <label class="form-label" for="budgetInput">Monthly Bill Budget Limit</label>
           <div style="display: flex; gap: 8px;">
             <input id="budgetInput" type="number" class="form-control" min="100" step="100" />
             <button id="saveBudgetBtn" class="btn-primary">Save</button>
@@ -420,11 +551,12 @@
       </div>
 
       <div class="card">
-        <div class="section-title" style="margin-bottom: 8px;">Data &amp; Offline Backup</div>
+        <div class="section-title" style="margin-bottom: 8px;">Reports &amp; Offline Backup</div>
         <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">
-          100% private. CSV &amp; JSON backup require Guardian Pro.
+          100% private. PDF Report, CSV &amp; JSON backup require Guardian Pro.
         </p>
         <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <button id="settingsPdfBtn" class="btn-secondary">PDF Report 🔒</button>
           <button id="exportCsvBtn" class="btn-secondary">Export CSV 🔒</button>
           <button id="exportJsonBtn" class="btn-secondary">Backup JSON 🔒</button>
           <label class="btn-secondary" style="cursor: pointer;">
@@ -437,9 +569,7 @@
 
       <div class="card">
         <div class="section-title" style="margin-bottom: 6px;">SubPulse Guardian Pro</div>
-        <p id="proStatusText" style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">
-          7-Day Free Trial Active.
-        </p>
+        <p id="proStatusText" style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">7-Day Free Trial Active.</p>
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <button id="settingsProBtn" class="btn-primary">Manage Subscription</button>
           <button id="restorePurchasesBtn" class="btn-secondary">Restore Purchases</button>
@@ -450,34 +580,22 @@
     </section>
   </div>
 
-  <!-- BOTTOM NAVIGATION -->
+  <!-- BOTTOM NAVIGATION (5 TABS) -->
   <nav class="bottom-nav">
-    <button class="nav-btn active" data-tab="dashboard">
-      <span class="nav-icon">📊</span>
-      <span>Dashboard</span>
-    </button>
-    <button class="nav-btn" data-tab="simulator">
-      <span class="nav-icon">✂️</span>
-      <span>Cut &amp; Save</span>
-    </button>
-    <button class="nav-btn" data-tab="history">
-      <span class="nav-icon">🧾</span>
-      <span>History</span>
-    </button>
-    <button class="nav-btn" data-tab="settings">
-      <span class="nav-icon">🎨</span>
-      <span>Settings</span>
-    </button>
+    <button class="nav-btn active" data-tab="dashboard"><span class="nav-icon">📊</span><span>Home</span></button>
+    <button class="nav-btn" data-tab="daily"><span class="nav-icon">💸</span><span>Daily</span></button>
+    <button class="nav-btn" data-tab="simulator"><span class="nav-icon">🏦</span><span>EMI &amp; Cut</span></button>
+    <button class="nav-btn" data-tab="history"><span class="nav-icon">🧾</span><span>History</span></button>
+    <button class="nav-btn" data-tab="settings"><span class="nav-icon">🎨</span><span>Settings</span></button>
   </nav>
 
-  <!-- ADD / EDIT MODAL (100% CUSTOMIZABLE) -->
+  <!-- ADD / EDIT BILL MODAL -->
   <div id="itemModal" class="modal-backdrop">
     <div class="modal">
       <div class="modal-head">
         <h3 id="modalTitle" style="font-size: 17px; font-weight: 700;">Add Custom Bill / EMI</h3>
         <button id="closeModalBtn" class="icon-btn">✕ Close</button>
       </div>
-
       <div class="preset-grid" id="presetGrid">
         <button type="button" class="preset-btn" data-name="Light Bill (Electricity)" data-amt="1800" data-cat="Utilities" data-cycle="bimonthly">Light Bill</button>
         <button type="button" class="preset-btn" data-name="Gas Bill" data-amt="950" data-cat="Utilities" data-cycle="monthly">Gas Bill</button>
@@ -486,8 +604,15 @@
         <button type="button" class="preset-btn" data-name="Car EMI" data-amt="12500" data-cat="EMI & Loans" data-cycle="monthly">Car EMI</button>
         <button type="button" class="preset-btn" data-name="Two-Wheeler EMI" data-amt="3800" data-cat="EMI & Loans" data-cycle="monthly">Two-Wheeler EMI</button>
         <button type="button" class="preset-btn" data-name="House Rent" data-amt="15000" data-cat="Utilities" data-cycle="monthly">House Rent</button>
-        <button type="button" class="preset-btn" data-name="Insurance" data-amt="12000" data-cat="EMI & Loans" data-cycle="yearly">Insurance</button>
         <button type="button" class="preset-btn" data-name="Netflix" data-amt="649" data-cat="Streaming" data-cycle="monthly">Netflix</button>
+      </div>
+      
+      <div class="sms-box">
+        <div style="font-size:12px;font-weight:700;color:var(--emerald);">📋 Smart Bank / UPI SMS Paste (Zero Permission)</div>
+        <div class="sms-row">
+          <input id="smsBillInput" class="form-control" type="text" placeholder="Paste: Rs 649 debited for Netflix..." style="padding:7px 10px;font-size:12px;" />
+          <button type="button" id="parseBillSmsBtn" class="btn-primary" style="padding:7px 11px;font-size:12px;">Auto-Fill</button>
+        </div>
       </div>
 
       <form id="subForm">
@@ -530,7 +655,7 @@
         </div>
         <div id="customCatGroup" class="form-group" style="display:none;">
           <label class="form-label" for="subCustomCat">New Custom Category Name</label>
-          <input id="subCustomCat" class="form-control" type="text" placeholder="e.g. Education, SIP, Credit Card, Home" />
+          <input id="subCustomCat" class="form-control" type="text" placeholder="e.g. Education, SIP, Credit Card" />
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -554,6 +679,131 @@
     </div>
   </div>
 
+  <!-- DAILY EXPENSE QUICK-LOG MODAL -->
+  <div id="dailyModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 style="font-size: 17px; font-weight: 700;">Log Daily Expense</h3>
+        <button id="closeDailyBtn" class="icon-btn">✕ Close</button>
+      </div>
+      <div class="preset-grid" id="dailyPresets">
+        <button type="button" class="preset-btn" data-dname="Groceries / Milk" data-damt="250" data-dcat="Needs">🥛 Groceries</button>
+        <button type="button" class="preset-btn" data-dname="Petrol / Travel" data-damt="300" data-dcat="Needs">⛽ Petrol</button>
+        <button type="button" class="preset-btn" data-dname="Tea / Snacks" data-damt="80" data-dcat="Wants">☕ Snacks</button>
+        <button type="button" class="preset-btn" data-dname="Dinner / Eating Out" data-damt="650" data-dcat="Wants">🍽️ Dining</button>
+        <button type="button" class="preset-btn" data-dname="Medical / Pharmacy" data-damt="400" data-dcat="Needs">💊 Medical</button>
+      </div>
+      
+      <div class="sms-box">
+        <div style="font-size:12px;font-weight:700;color:var(--emerald);">📋 Smart UPI SMS Paste (Auto-Fill)</div>
+        <div class="sms-row">
+          <input id="smsDailyInput" class="form-control" type="text" placeholder="Paste: Paid Rs 250 to Swiggy via UPI..." style="padding:7px 10px;font-size:12px;" />
+          <button type="button" id="parseDailySmsBtn" class="btn-primary" style="padding:7px 11px;font-size:12px;">Auto-Fill</button>
+        </div>
+      </div>
+
+      <form id="dailyForm">
+        <div class="form-group">
+          <label class="form-label" for="dailyName">What did you spend on?</label>
+          <input id="dailyName" class="form-control" type="text" required placeholder="e.g. Tea, Petrol, Vegetables, Movie" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="dailyAmount">Amount</label>
+            <input id="dailyAmount" class="form-control" type="number" min="1" step="0.01" required placeholder="150" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="dailyBucket">50/30/20 Bucket</label>
+            <select id="dailyBucket" class="form-control">
+              <option value="Needs">Needs (Essential)</option>
+              <option value="Wants">Wants (Lifestyle)</option>
+              <option value="Savings">Savings / SIP</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="dailyDate">Date</label>
+          <input id="dailyDate" class="form-control" type="date" required />
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;">
+          <button type="button" id="cancelDailyBtn" class="btn-secondary">Cancel</button>
+          <button type="submit" class="btn-primary">Save Expense</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- WHATSAPP BILL SPLIT MODAL -->
+  <div id="splitModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 style="font-size: 17px; font-weight: 700;">💬 1-Tap WhatsApp Bill Split</h3>
+        <button id="closeSplitBtn" class="icon-btn">✕ Close</button>
+      </div>
+      <p id="splitBillTitle" style="font-size:14px;font-weight:700;margin-bottom:10px;"></p>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="splitPeople">Total People (Including You)</label>
+          <input id="splitPeople" class="form-control" type="number" min="2" max="50" value="2" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Per Person Share</label>
+          <div id="splitShareVal" style="font-size:22px;font-weight:800;color:var(--emerald);padding-top:6px;">₹0</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button id="sendWhatsAppBtn" class="btn-primary" style="flex:1;justify-content:center;">Send on WhatsApp</button>
+        <button id="copySplitBtn" class="btn-secondary">Copy Text</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="goalModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 style="font-size:17px;font-weight:700;">🎯 New Savings Goal Jar</h3>
+        <button id="closeGoalBtn" class="icon-btn">✕ Close</button>
+      </div>
+      <form id="goalForm">
+        <div class="form-group">
+          <label class="form-label" for="goalName">Goal Name</label>
+          <input id="goalName" class="form-control" type="text" required placeholder="e.g. Emergency Fund, New Bike, Goa Trip" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="goalTarget">Target Amount</label>
+            <input id="goalTarget" class="form-control" type="number" min="100" required placeholder="50000" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="goalSaved">Already Saved</label>
+            <input id="goalSaved" class="form-control" type="number" min="0" value="0" />
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;">
+          <button type="button" id="cancelGoalBtn" class="btn-secondary">Cancel</button>
+          <button type="submit" class="btn-primary">Create Jar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  
+  <!-- COLORFUL LIVE EXPENSE REPORT MODAL -->
+  <div id="reportModal" class="modal-backdrop">
+    <div class="modal" style="max-width:540px;">
+      <div class="modal-head">
+        <h3 style="font-size: 18px; font-weight: 800;">📊 Colorful Expense Report</h3>
+        <button id="closeReportBtn" class="icon-btn">✕ Close</button>
+      </div>
+      <div id="reportBody"></div>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button id="downloadReportHtmlBtn" class="btn-primary" style="flex:1;justify-content:center;">Download Report</button>
+        <button id="printReportBtn" class="btn-secondary">Print / PDF</button>
+      </div>
+    </div>
+  </div>
+
   <!-- SUBSCRIPTION PAYWALL MODAL -->
   <div id="proModal" class="modal-backdrop">
     <div class="modal">
@@ -562,7 +812,7 @@
         <button id="closeProBtn" class="icon-btn">✕</button>
       </div>
       <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">
-        Start with 7 days free, then upgrade to Pro for unlimited bills &amp; EMIs, 5-year simulator, and CSV/JSON exports:
+        Start with 7 days free, then upgrade to Pro for unlimited bills, Loan Interest-Saver, 5-year projections &amp; PDF/CSV exports:
       </p>
 
       <div class="plan-grid" id="planGrid">
@@ -572,8 +822,8 @@
             <div style="font-size:12px;color:var(--muted);">Cancel anytime</div>
           </div>
           <div style="text-align:right;">
-            <div style="font-weight:800;font-size:16px;">₹99 / mo</div>
-            <div style="font-size:11px;color:var(--muted);">$2.99/mo</div>
+            <div style="font-weight:800;font-size:16px;">₹49 / mo</div>
+            <div style="font-size:11px;color:var(--muted);">$1.99/mo</div>
           </div>
         </div>
         <div class="plan-card selected" data-plan="subpulse_pro_yearly">
@@ -582,8 +832,8 @@
             <div style="font-size:12px;color:var(--muted);">Save 58% • 7-day free trial</div>
           </div>
           <div style="text-align:right;">
-            <div style="font-weight:800;font-size:16px;">₹499 / yr</div>
-            <div style="font-size:11px;color:var(--muted);">$19.99/yr</div>
+            <div style="font-weight:800;font-size:16px;">₹249 / yr</div>
+            <div style="font-size:11px;color:var(--muted);">$14.99/yr</div>
           </div>
         </div>
         <div class="plan-card" data-plan="subpulse_pro_lifetime">
@@ -592,8 +842,8 @@
             <div style="font-size:12px;color:var(--muted);">Pay once, own forever</div>
           </div>
           <div style="text-align:right;">
-            <div style="font-weight:800;font-size:16px;">₹1,499</div>
-            <div style="font-size:11px;color:var(--muted);">$39.99 once</div>
+            <div style="font-weight:800;font-size:16px;">₹599</div>
+            <div style="font-size:11px;color:var(--muted);">$29.99 once</div>
           </div>
         </div>
       </div>
@@ -608,8 +858,8 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'subpulse_state_v6';
-    const FREE_LIMIT = 4;
+    const STORAGE_KEY = 'subpulse_state_v8';
+    const FREE_LIMIT = 5;
     const TRIAL_DAYS = 7;
 
     const THEMES = {
@@ -689,9 +939,18 @@
       { id: '3', name: 'Bike Loan EMI', amount: 4850, cycle: 'monthly', customDays: 30, category: 'EMI & Loans', nextDate: addDaysISO(8), paused: false, isTrial: false, emisLeft: 9, note: '' }
     ];
 
+    const DEFAULT_DAILY = [
+      { id: 'd1', name: 'Groceries & Milk', amount: 420, bucket: 'Needs', date: addDaysISO(0) },
+      { id: 'd2', name: 'Coffee & Snacks', amount: 150, bucket: 'Wants', date: addDaysISO(0) }
+    ];
+
     let state = {
       theme: 'emerald',
+      lang: 'en',
+      appPin: '',
       currency: 'INR',
+      monthlyIncome: 50000,
+      savingsGoal: 10000,
       budget: 15000,
       isPro: false,
       activePlan: null,
@@ -702,9 +961,69 @@
       search: '',
       customCategories: [],
       items: DEFAULT_ITEMS,
+      dailyExpenses: DEFAULT_DAILY,
+      goals: [{ id: 'g1', name: 'Emergency Fund', target: 50000, saved: 12000 }],
       history: [],
       simOffIds: []
     };
+
+    let activeSplitItem = null;
+
+    const I18N = {
+      en: {
+        nav_home: 'Home', nav_daily: 'Daily', nav_emi: 'EMI & Cut', nav_hist: 'History', nav_set: 'Settings',
+        safe_lbl: 'Safe-to-Spend Today', fixed_lbl: 'Monthly Fixed Bills & EMIs',
+        add_bill: '+ Bill/EMI', add_exp: '+ Expense', goals_hdr: '🎯 Savings Goal Jars'
+      },
+      gu: {
+        nav_home: 'હોમ', nav_daily: 'દૈનિક', nav_emi: 'EMI & બચત', nav_hist: 'હિસ્ટ્રી', nav_set: 'સેટિંગ્સ',
+        safe_lbl: 'આજે વાપરવા માટે સુરક્ષિત', fixed_lbl: 'માસિક ફિક્સ બિલ અને EMI',
+        add_bill: '+ બિલ/EMI', add_exp: '+ ખર્ચ', goals_hdr: '🎯 સેવિંગ્સ ગોલ જાર'
+      },
+      hi: {
+        nav_home: 'होम', nav_daily: 'दैनिक', nav_emi: 'EMI & बचत', nav_hist: 'हिस्ट्री', nav_set: 'सेटिंग्स',
+        safe_lbl: 'आज खर्च करने के लिए सुरक्षित', fixed_lbl: 'मासिक फिक्स बिल और EMI',
+        add_bill: '+ बिल/EMI', add_exp: '+ खर्च', goals_hdr: '🎯 सेविंग्स गोल जार'
+      },
+      es: {
+        nav_home: 'Inicio', nav_daily: 'Diario', nav_emi: 'Préstamos', nav_hist: 'Historial', nav_set: 'Ajustes',
+        safe_lbl: 'Seguro para gastar hoy', fixed_lbl: 'Facturas y Cuotas Mensuales',
+        add_bill: '+ Factura', add_exp: '+ Gasto', goals_hdr: '🎯 Metas de Ahorro'
+      }
+    };
+
+    function applyLanguage(lang) {
+      const dict = I18N[lang] || I18N.en;
+      const navLabels = { dashboard: dict.nav_home, daily: dict.nav_daily, simulator: dict.nav_emi, history: dict.nav_hist, settings: dict.nav_set };
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        const span = b.querySelectorAll('span')[1];
+        if (span && navLabels[b.dataset.tab]) span.textContent = navLabels[b.dataset.tab];
+      });
+      const safeLbl = document.querySelector('.safe-card .hero-label');
+      if (safeLbl) safeLbl.textContent = dict.safe_lbl;
+      const fixLbl = document.querySelector('#tab-dashboard .hero-card .hero-label');
+      if (fixLbl) fixLbl.textContent = dict.fixed_lbl;
+      document.getElementById('addBtnTop').textContent = dict.add_bill;
+      document.getElementById('quickExpenseBtn').textContent = dict.add_exp;
+      document.getElementById('goalsTitle').textContent = dict.goals_hdr;
+    }
+
+    function parseSmartSms(text) {
+      const raw = String(text || '').trim();
+      if (!raw) return null;
+      const amtMatch = raw.match(/(?:rs\.?|inr|₹|\$|€|£)\s*([0-9,]+(?:\.[0-9]{1,2})?)/i) || raw.match(/([0-9,]+(?:\.[0-9]{1,2})?)\s*(?:rs|inr)/i);
+      const amount = amtMatch ? parseFloat(amtMatch[1].replace(/,/g, '')) : 0;
+      const merchMatch = raw.match(/(?:to|for|at|towards)\s+([A-Za-z0-9 &._-]{2,28})/i);
+      let merchant = merchMatch ? merchMatch[1].trim().replace(/\s+(on|via|ref|upi).*$/i, '').trim() : 'Bank Transaction';
+      const low = raw.toLowerCase();
+      let category = 'Utilities', bucket = 'Needs';
+      if (/netflix|spotify|prime|hotstar|youtube|swiggy|zomato|movie|cafe|coffee/.test(low)) { category = 'Streaming'; bucket = 'Wants'; }
+      else if (/emi|loan|hdfc|icici|sbi|bajaj/.test(low)) { category = 'EMI & Loans'; bucket = 'Needs'; }
+      else if (/chatgpt|openai|gemini|canva|adobe/.test(low)) { category = 'AI & Work'; bucket = 'Wants'; }
+      else if (/gym|fit|health/.test(low)) { category = 'Fitness'; bucket = 'Needs'; }
+      return { amount, merchant, category, bucket };
+    }
+
 
     function populateCurrencies() {
       const sel = document.getElementById('currencySelect');
@@ -723,9 +1042,7 @@
       const cats = getAllCategories();
       sel.innerHTML = cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('') +
         `<option value="__custom__">+ Custom Category...</option>`;
-      if (selectedCat && cats.includes(selectedCat)) {
-        sel.value = selectedCat;
-      }
+      if (selectedCat && cats.includes(selectedCat)) sel.value = selectedCat;
       document.getElementById('customCatGroup').style.display = sel.value === '__custom__' ? 'block' : 'none';
     }
 
@@ -780,15 +1097,14 @@
           if (parsed && Array.isArray(parsed.items)) {
             state = { ...state, ...parsed };
             if (!state.trialStartDate) state.trialStartDate = Date.now();
+            if (!Array.isArray(state.dailyExpenses)) state.dailyExpenses = [];
           }
         }
       } catch (e) {}
     }
 
     function saveState() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch (e) {}
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
     }
 
     function showToast(msg) {
@@ -801,11 +1117,8 @@
     function fmt(val) {
       const cfg = CURRENCIES[state.currency] || CURRENCIES.INR;
       const num = Math.round(Number(val) || 0);
-      try {
-        return cfg.symbol + num.toLocaleString(cfg.locale);
-      } catch (e) {
-        return cfg.symbol + num.toLocaleString('en-US');
-      }
+      try { return cfg.symbol + num.toLocaleString(cfg.locale); }
+      catch (e) { return cfg.symbol + num.toLocaleString('en-US'); }
     }
 
     function toMonthly(item) {
@@ -836,65 +1149,206 @@
       return Math.round((target - today) / 86400000);
     }
 
+    function calcEmiSaver() {
+      const P = Math.max(0, parseFloat(document.getElementById('loanPrincipal').value) || 0);
+      const annualRate = Math.max(0.1, parseFloat(document.getElementById('loanRate').value) || 0.1);
+      const N = Math.max(1, parseInt(document.getElementById('loanMonths').value, 10) || 1);
+      const extra = Math.max(0, parseFloat(document.getElementById('loanExtra').value) || 0);
+
+      const r = annualRate / 12 / 100;
+      const pow = Math.pow(1 + r, N);
+      const emi = (P * r * pow) / (pow - 1);
+      const origTotalInterest = Math.max(0, emi * N - P);
+
+      // Simulate month-by-month with extra prepayment
+      let bal = P;
+      let newMonths = 0;
+      let newInterest = 0;
+      while (bal > 0.5 && newMonths < N + 120) {
+        const intPart = bal * r;
+        newInterest += intPart;
+        const pay = Math.min(bal + intPart, emi + extra);
+        bal = bal + intPart - pay;
+        newMonths++;
+      }
+
+      const interestSaved = Math.max(0, origTotalInterest - newInterest);
+      const monthsSaved = Math.max(0, N - newMonths);
+
+      document.getElementById('emiRegularVal').textContent = fmt(emi);
+      document.getElementById('emiInterestSaved').textContent = hasProAccess() ? fmt(interestSaved) : '🔒 PRO';
+      document.getElementById('emiMonthsSaved').textContent = hasProAccess() ? `${monthsSaved} mo` : '🔒 PRO';
+    }
+
     function renderAll() {
       applyTheme(state.theme);
+      applyLanguage(state.lang || 'en');
+      document.getElementById('langSelect').value = state.lang || 'en';
+      document.getElementById('pinStatusTxt').textContent = state.appPin ? 'PIN Lock: Active (••••)' : 'PIN Lock: Off';
+      document.getElementById('disablePinBtn').style.display = state.appPin ? 'inline-flex' : 'none';
       document.getElementById('currencySelect').value = state.currency;
+      document.getElementById('incomeInput').value = state.monthlyIncome;
+      document.getElementById('savingsGoalInput').value = state.savingsGoal;
       document.getElementById('budgetInput').value = state.budget;
       document.getElementById('sortSelect').value = state.sortBy;
 
       const unlocked = hasProAccess();
       const daysLeft = trialDaysLeft();
       const proPill = document.getElementById('openProBtn');
-      if (state.isPro) {
-        proPill.textContent = '★ PRO ACTIVE';
-      } else if (daysLeft > 0) {
-        proPill.textContent = `★ TRIAL (${daysLeft}d)`;
-      } else {
-        proPill.textContent = '★ UPGRADE';
-      }
+      if (state.isPro) proPill.textContent = '★ PRO ACTIVE';
+      else if (daysLeft > 0) proPill.textContent = `★ TRIAL (${daysLeft}d)`;
+      else proPill.textContent = '★ UPGRADE';
       proPill.classList.toggle('active-pro', unlocked);
+
       document.getElementById('resetFreeBtn').style.display = (state.isPro || daysLeft === 0) ? 'inline-flex' : 'none';
       document.getElementById('resetFreeBtn').textContent = state.isPro ? 'Switch to Free' : 'Restart 7-Day Trial';
       document.getElementById('expireTrialBtn').style.display = (!state.isPro && daysLeft > 0) ? 'inline-flex' : 'none';
+      document.getElementById('settingsPdfBtn').textContent = unlocked ? 'PDF Report' : 'PDF Report 🔒';
       document.getElementById('exportCsvBtn').textContent = unlocked ? 'Export CSV' : 'Export CSV 🔒';
       document.getElementById('exportJsonBtn').textContent = unlocked ? 'Backup JSON' : 'Backup JSON 🔒';
       document.getElementById('proStatusText').textContent = state.isPro
-        ? `Pro Active (${state.activePlan || 'Guardian Pro'}). Unlimited bills, 5-year simulator & exports unlocked.`
+        ? `Pro Active (${state.activePlan || 'Guardian Pro'}). All features & reports unlocked.`
         : daysLeft > 0
-          ? `7-Day Free Trial Active (${daysLeft} days left). All Pro features & unlimited bills unlocked!`
-          : `Trial ended. Free plan allows up to ${FREE_LIMIT} trackers. Upgrade to Pro to unlock unlimited bills & exports.`;
+          ? `7-Day Free Trial Active (${daysLeft} days left). All Pro features unlocked!`
+          : `Trial ended. Free plan allows ${FREE_LIMIT} bills. Upgrade to Pro to unlock Loan Interest-Saver & exports.`;
 
       const activeItems = state.items.filter(i => !i.paused);
-      const monthlyTotal = activeItems.reduce((sum, i) => sum + toMonthly(i), 0);
-      const yearlyTotal = monthlyTotal * 12;
-      const dailyTotal = monthlyTotal / 30;
+      const monthlyBills = activeItems.reduce((sum, i) => sum + toMonthly(i), 0);
+      const dailyTotal = (state.dailyExpenses || []).reduce((sum, d) => sum + (Number(d.amount) || 0), 0);
 
-      document.getElementById('monthlyBurn').textContent = fmt(monthlyTotal);
-      document.getElementById('yearlyBurn').textContent = fmt(yearlyTotal);
+      // Safe-to-Spend Calculation
+      const now = new Date();
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const daysRemaining = Math.max(1, daysInMonth - now.getDate() + 1);
+      const disposable = (Number(state.monthlyIncome) || 0) - (Number(state.savingsGoal) || 0) - monthlyBills - dailyTotal;
+      const safePerDay = disposable / daysRemaining;
+
+      const safeEl = document.getElementById('safeDailyAmount');
+      safeEl.textContent = `${fmt(Math.max(0, safePerDay))} / day`;
+      safeEl.style.color = safePerDay < 0 ? 'var(--coral)' : 'var(--emerald)';
+      document.getElementById('safeSubText').textContent = safePerDay >= 0
+        ? `${fmt(disposable)} left for ${daysRemaining} days (Income ${fmt(state.monthlyIncome)} − Bills − Goal)`
+        : `Over budget by ${fmt(Math.abs(disposable))} this month!`;
+
+      document.getElementById('monthlyBurn').textContent = fmt(monthlyBills);
+      document.getElementById('yearlyBurn').textContent = fmt(monthlyBills * 12);
       document.getElementById('activeCount').textContent = String(activeItems.length);
-      document.getElementById('dailyBurn').textContent = fmt(dailyTotal);
+      document.getElementById('dailySpentTotal').textContent = fmt(dailyTotal);
 
       const budget = Math.max(1, Number(state.budget) || 1);
-      const pct = Math.min(100, Math.round((monthlyTotal / budget) * 100));
+      const pct = Math.min(100, Math.round((monthlyBills / budget) * 100));
       document.getElementById('budgetRatioText').textContent = `${pct}% of ${fmt(budget)}`;
       const fill = document.getElementById('budgetFill');
       fill.style.width = `${pct}%`;
       fill.classList.toggle('warn', pct >= 85);
 
       renderCategoryPills();
-      renderInsight(activeItems, monthlyTotal);
+      renderInsight(activeItems, monthlyBills);
       renderUpcoming(activeItems);
-      renderDonut(activeItems, monthlyTotal);
-      renderBarChart(monthlyTotal);
+      renderDonut(activeItems, monthlyBills);
+      renderBarChart(monthlyBills);
       renderList();
-      renderSimulator(state.items, monthlyTotal);
+      renderDaily();
+      renderGoals();
+      renderSimulator(state.items, monthlyBills);
       renderHistory();
+      calcEmiSaver();
+    }
+
+
+    function renderGoals() {
+      const wrap = document.getElementById('goalList');
+      const goals = state.goals || [];
+      if (!goals.length) {
+        wrap.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">Tap <strong>+ New Goal</strong> to start a savings jar.</div>`;
+        return;
+      }
+      wrap.innerHTML = goals.map(g => {
+        const pct = Math.min(100, Math.round(((g.saved || 0) / Math.max(1, g.target)) * 100));
+        return `
+          <div class="card" style="margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <strong style="font-size:14px;">🎯 ${escapeHtml(g.name)}</strong>
+              <span style="font-size:12px;color:var(--emerald);font-weight:700;">${pct}%</span>
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${fmt(g.saved)} saved of ${fmt(g.target)}</div>
+            <div class="budget-track" style="margin-bottom:10px;"><div class="budget-fill" style="width:${pct}%;"></div></div>
+            <div style="display:flex;gap:6px;justify-content:flex-end;">
+              <button class="icon-btn paid" onclick="topUpGoal('${g.id}', 500)">+500</button>
+              <button class="icon-btn paid" onclick="topUpGoal('${g.id}', 2000)">+2000</button>
+              <button class="icon-btn" onclick="deleteGoal('${g.id}')">Del</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.topUpGoal = function(id, amt) {
+      const g = (state.goals || []).find(x => x.id === id);
+      if (g) { g.saved = (Number(g.saved) || 0) + amt; saveState(); renderGoals(); showToast(`Added ${fmt(amt)} to ${g.name}`); }
+    };
+    window.deleteGoal = function(id) {
+      state.goals = (state.goals || []).filter(x => x.id !== id);
+      saveState(); renderGoals(); showToast('Goal Removed');
+    };
+
+    function renderDaily() {
+      const list = document.getElementById('dailyList');
+      const items = state.dailyExpenses || [];
+      let needs = 0, wants = 0, savings = 0;
+      items.forEach(d => {
+        const a = Number(d.amount) || 0;
+        if (d.bucket === 'Needs') needs += a;
+        else if (d.bucket === 'Wants') wants += a;
+        else savings += a;
+      });
+      const total = needs + wants + savings;
+      document.getElementById('dailyTabTotal').textContent = fmt(total);
+      document.getElementById('dailyEntryCount').textContent = String(items.length);
+
+      const denom = Math.max(1, total);
+      const np = Math.round((needs / denom) * 100);
+      const wp = Math.round((wants / denom) * 100);
+      const sp = total > 0 ? Math.max(0, 100 - np - wp) : 0;
+
+      document.getElementById('ruleNeedsBar').style.width = `${total > 0 ? np : 50}%`;
+      document.getElementById('ruleWantsBar').style.width = `${total > 0 ? wp : 30}%`;
+      document.getElementById('ruleSaveBar').style.width = `${total > 0 ? sp : 20}%`;
+      document.getElementById('ruleNeedsTxt').textContent = `🔵 Needs: ${np}% (Target 50%)`;
+      document.getElementById('ruleWantsTxt').textContent = `🟣 Wants: ${wp}% (Target 30%)`;
+      document.getElementById('ruleSaveTxt').textContent = `🟢 Savings: ${sp}% (Target 20%)`;
+
+      if (!items.length) {
+        list.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">Tap <strong>+ Log Spend</strong> to track daily tea, fuel, groceries &amp; UPI spends.</div>`;
+        return;
+      }
+
+      list.innerHTML = items.map(d => {
+        const col = d.bucket === 'Needs' ? '#38BDF8' : d.bucket === 'Wants' ? '#A78BFA' : '#10B981';
+        return `
+          <div class="sub-item row-item">
+            <div class="sub-left">
+              <div class="sub-icon" style="background:${col}22;color:${col};">${escapeHtml(d.bucket.charAt(0))}</div>
+              <div class="sub-info">
+                <div class="sub-name">${escapeHtml(d.name)}</div>
+                <div class="sub-meta">${escapeHtml(d.bucket)} • ${d.date}</div>
+              </div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">${fmt(d.amount)}</div>
+              <div class="sub-actions">
+                <button class="icon-btn" onclick="deleteDaily('${d.id}')">Del</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function renderInsight(activeItems, monthlyTotal) {
       const el = document.getElementById('insightText');
       if (!activeItems.length) {
-        el.textContent = 'Tap + Add Custom to add your own bills, EMIs, or custom categories.';
+        el.textContent = 'Tap + Bill/EMI to add custom bills, or + Expense for daily spends.';
         return;
       }
       const trials = activeItems.filter(i => i.isTrial && daysUntil(i.nextDate) <= 7);
@@ -904,7 +1358,7 @@
       }
       const top = [...activeItems].sort((a, b) => toMonthly(b) - toMonthly(a))[0];
       const topShare = monthlyTotal > 0 ? Math.round((toMonthly(top) / monthlyTotal) * 100) : 0;
-      el.textContent = `Top spend: ${top.name} takes ${topShare}% of your monthly recurring burn (${fmt(toMonthly(top))}/mo).`;
+      el.textContent = `Top bill: ${top.name} takes ${topShare}% of your fixed burn (${fmt(toMonthly(top))}/mo).`;
     }
 
     function renderUpcoming(activeItems) {
@@ -937,9 +1391,7 @@
       const svg = document.getElementById('donutSvg');
       const legend = document.getElementById('donutLegend');
       const totals = {};
-      activeItems.forEach(i => {
-        totals[i.category] = (totals[i.category] || 0) + toMonthly(i);
-      });
+      activeItems.forEach(i => { totals[i.category] = (totals[i.category] || 0) + toMonthly(i); });
 
       const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]);
       if (!entries.length || monthlyTotal <= 0) {
@@ -948,13 +1400,10 @@
         return;
       }
 
-      const r = 40;
-      const c = 2 * Math.PI * r;
-      let offset = 0;
-      let circles = '';
+      const r = 40, c = 2 * Math.PI * r;
+      let offset = 0, circles = '';
       entries.forEach(([cat, val]) => {
-        const frac = val / monthlyTotal;
-        const dash = frac * c;
+        const dash = (val / monthlyTotal) * c;
         const color = getCatColor(cat);
         circles += `<circle cx="56" cy="56" r="${r}" fill="none" stroke="${color}" stroke-width="14" stroke-dasharray="${dash.toFixed(2)} ${c.toFixed(2)}" stroke-dashoffset="${(-offset).toFixed(2)}" transform="rotate(-90 56 56)" />`;
         offset += dash;
@@ -965,38 +1414,24 @@
       legend.innerHTML = entries.map(([cat, val]) => {
         const color = getCatColor(cat);
         const pct = Math.round((val / monthlyTotal) * 100);
-        return `
-          <div class="legend-item">
-            <div style="display:flex;align-items:center;gap:6px;min-width:0;">
-              <span class="legend-dot" style="background:${color};"></span>
-              <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(cat)}</span>
-            </div>
-            <strong>${pct}%</strong>
-          </div>
-        `;
+        return `<div class="legend-item"><div style="display:flex;align-items:center;gap:6px;min-width:0;"><span class="legend-dot" style="background:${color};"></span><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(cat)}</span></div><strong>${pct}%</strong></div>`;
       }).join('');
     }
 
     function renderBarChart(monthlyTotal) {
       const svg = document.getElementById('barSvg');
-      const months = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'];
+      const months = [];
       const now = new Date();
       for (let i = 0; i < 6; i++) {
         const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
-        months[i] = d.toLocaleString('en-US', { month: 'short' });
+        months.push(d.toLocaleString('en-US', { month: 'short' }));
       }
-      const maxH = 72;
-      const barH = monthlyTotal > 0 ? maxH : 6;
+      const maxH = 72, barH = monthlyTotal > 0 ? maxH : 6;
       const t = THEMES[state.theme] || THEMES.emerald;
       svg.innerHTML = months.map((m, idx) => {
-        const x = 14 + idx * 44;
-        const y = 84 - barH;
+        const x = 14 + idx * 44, y = 84 - barH;
         const fill = idx === 0 ? t.primary : t.sec;
-        const op = idx === 0 ? '1' : '0.7';
-        return `
-          <rect x="${x}" y="${y}" width="26" height="${barH}" rx="6" fill="${fill}" opacity="${op}"></rect>
-          <text x="${x + 13}" y="106" text-anchor="middle" fill="${t.muted}" font-size="11">${m}</text>
-        `;
+        return `<rect x="${x}" y="${y}" width="26" height="${barH}" rx="6" fill="${fill}" opacity="${idx === 0 ? '1' : '0.7'}"></rect><text x="${x + 13}" y="106" text-anchor="middle" fill="${t.muted}" font-size="11">${m}</text>`;
       }).join('');
     }
 
@@ -1009,16 +1444,12 @@
         return matchCat && matchQ;
       });
 
-      if (state.sortBy === 'high') {
-        filtered.sort((a, b) => toMonthly(b) - toMonthly(a));
-      } else if (state.sortBy === 'name') {
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-      } else {
-        filtered.sort((a, b) => daysUntil(a.nextDate) - daysUntil(b.nextDate));
-      }
+      if (state.sortBy === 'high') filtered.sort((a, b) => toMonthly(b) - toMonthly(a));
+      else if (state.sortBy === 'name') filtered.sort((a, b) => a.name.localeCompare(b.name));
+      else filtered.sort((a, b) => daysUntil(a.nextDate) - daysUntil(b.nextDate));
 
       if (!filtered.length) {
-        list.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">No matching bills. Tap <strong>+ Add Custom</strong> to add your own.</div>`;
+        list.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">No matching bills. Tap <strong>+ Bill/EMI</strong> to add your own.</div>`;
         return;
       }
 
@@ -1032,23 +1463,26 @@
         const noteHtml = i.note ? `<div class="sub-note">${escapeHtml(i.note)}</div>` : '';
         return `
           <div class="sub-item ${i.paused ? 'paused' : ''}">
-            <div class="sub-left">
-              <div class="sub-icon" style="background:${color}22;color:${color};">${escapeHtml(initial)}</div>
-              <div class="sub-info">
-                <div class="sub-name">${escapeHtml(i.name)} ${trialBadge} ${emiBadge}</div>
-                <div class="sub-meta">${escapeHtml(i.category)} • ${dueText} (${i.nextDate})</div>
-                ${noteHtml}
+            <div class="sub-top-row">
+              <div class="sub-left">
+                <div class="sub-icon" style="background:${color}22;color:${color};">${escapeHtml(initial)}</div>
+                <div class="sub-info">
+                  <div class="sub-name">${escapeHtml(i.name)} ${trialBadge} ${emiBadge}</div>
+                  <div class="sub-meta">${escapeHtml(i.category)} • ${dueText} (${i.nextDate})</div>
+                  ${noteHtml}
+                </div>
+              </div>
+              <div class="sub-right">
+                <div class="sub-price">${fmt(i.amount)}<span style="font-size:11px;color:var(--muted);font-weight:500;">/${cycleShort(i)}</span></div>
               </div>
             </div>
-            <div class="sub-right">
-              <div class="sub-price">${fmt(i.amount)}<span style="font-size:11px;color:var(--muted);font-weight:500;">/${cycleShort(i)}</span></div>
-              <div class="sub-actions">
-                <button class="icon-btn paid" onclick="markPaid('${i.id}')">✓ Paid</button>
-                <button class="icon-btn" onclick="exportCalendar('${i.id}')">📅</button>
-                <button class="icon-btn" onclick="togglePause('${i.id}')">${i.paused ? 'Resume' : 'Pause'}</button>
-                <button class="icon-btn" onclick="openEdit('${i.id}')">Edit</button>
-                <button class="icon-btn" onclick="deleteItem('${i.id}')">Del</button>
-              </div>
+            <div class="sub-actions">
+              <button class="icon-btn paid" onclick="markPaid('${i.id}')">✓ Paid</button>
+              <button class="icon-btn" onclick="openSplit('${i.id}')">💬 Split</button>
+              <button class="icon-btn" onclick="exportCalendar('${i.id}')">📅</button>
+              <button class="icon-btn" onclick="togglePause('${i.id}')">${i.paused ? 'Resume' : 'Pause'}</button>
+              <button class="icon-btn" onclick="openEdit('${i.id}')">Edit</button>
+              <button class="icon-btn" onclick="deleteItem('${i.id}')">Del</button>
             </div>
           </div>
         `;
@@ -1059,11 +1493,7 @@
       const simList = document.getElementById('simList');
       document.getElementById('simItemCount').textContent = String(allItems.length);
       let savedMonthly = 0;
-      allItems.forEach(i => {
-        if (!i.paused && state.simOffIds.includes(i.id)) {
-          savedMonthly += toMonthly(i);
-        }
-      });
+      allItems.forEach(i => { if (!i.paused && state.simOffIds.includes(i.id)) savedMonthly += toMonthly(i); });
 
       document.getElementById('simMonthlySaved').textContent = fmt(savedMonthly);
       document.getElementById('simYearlySaved').textContent = `${fmt(savedMonthly * 12)} / yr`;
@@ -1077,17 +1507,13 @@
 
       simList.innerHTML = allItems.map(i => {
         const isKept = !state.simOffIds.includes(i.id) && !i.paused;
-        const statusTag = i.paused ? ' • Paused' : '';
         return `
-          <div class="sub-item ${i.paused ? 'paused' : ''}">
+          <div class="sub-item row-item ${i.paused ? 'paused' : ''}">
             <div class="sub-info">
               <div class="sub-name">${escapeHtml(i.name)}</div>
-              <div class="sub-meta">${escapeHtml(i.category)}${statusTag} • Impact: ${fmt(toMonthly(i))}/mo</div>
+              <div class="sub-meta">${escapeHtml(i.category)}${i.paused ? ' • Paused' : ''} • Impact: ${fmt(toMonthly(i))}/mo</div>
             </div>
-            <label class="switch">
-              <input type="checkbox" ${isKept ? 'checked' : ''} onchange="toggleSim('${i.id}', this.checked)" />
-              <span class="slider"></span>
-            </label>
+            <label class="switch"><input type="checkbox" ${isKept ? 'checked' : ''} onchange="toggleSim('${i.id}', this.checked)" /><span class="slider"></span></label>
           </div>
         `;
       }).join('');
@@ -1100,16 +1526,13 @@
       document.getElementById('historyCount').textContent = String(state.history.length);
 
       if (!state.history.length) {
-        list.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">Tap <strong>✓ Paid</strong> on any bill to log payment history and auto-advance its next due date.</div>`;
+        list.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);">Tap <strong>✓ Paid</strong> on any bill to log payment history.</div>`;
         return;
       }
 
       list.innerHTML = state.history.map(h => `
-        <div class="sub-item">
-          <div class="sub-info">
-            <div class="sub-name">${escapeHtml(h.name)}</div>
-            <div class="sub-meta">Paid on ${h.paidOn} • ${escapeHtml(h.category)}</div>
-          </div>
+        <div class="sub-item row-item">
+          <div class="sub-info"><div class="sub-name">${escapeHtml(h.name)}</div><div class="sub-meta">Paid on ${h.paidOn} • ${escapeHtml(h.category)}</div></div>
           <div class="sub-price" style="color:var(--emerald);">${fmt(h.amount)}</div>
         </div>
       `).join('');
@@ -1119,71 +1542,68 @@
       return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
     }
 
+    window.deleteDaily = function(id) {
+      state.dailyExpenses = state.dailyExpenses.filter(d => d.id !== id);
+      saveState(); renderAll(); showToast('Expense Deleted');
+    };
+
+    window.openSplit = function(id) {
+      const item = state.items.find(x => x.id === id);
+      if (!item) return;
+      activeSplitItem = item;
+      document.getElementById('splitBillTitle').textContent = `${item.name} — Total ${fmt(item.amount)}`;
+      document.getElementById('splitPeople').value = 2;
+      updateSplitPreview();
+      document.getElementById('splitModal').classList.add('open');
+    };
+
+    function updateSplitPreview() {
+      if (!activeSplitItem) return;
+      const n = Math.max(2, parseInt(document.getElementById('splitPeople').value, 10) || 2);
+      document.getElementById('splitShareVal').textContent = fmt(activeSplitItem.amount / n);
+    }
+
+    function buildSplitMessage() {
+      const n = Math.max(2, parseInt(document.getElementById('splitPeople').value, 10) || 2);
+      const share = fmt(activeSplitItem.amount / n);
+      return `Hi! Sharing our *${activeSplitItem.name}* bill (Total: ${fmt(activeSplitItem.amount)}, Due: ${activeSplitItem.nextDate}). Split among ${n} people = *${share}* per person. Tracked via SubPulse.`;
+    }
+
     window.markPaid = function(id) {
       const item = state.items.find(x => x.id === id);
       if (!item) return;
-      state.history.unshift({
-        id: String(Date.now()),
-        name: item.name,
-        amount: item.amount,
-        category: item.category,
-        paidOn: new Date().toISOString().slice(0, 10)
-      });
+      state.history.unshift({ id: String(Date.now()), name: item.name, amount: item.amount, category: item.category, paidOn: new Date().toISOString().slice(0, 10) });
       item.nextDate = advanceDateISO(item.nextDate, item.cycle, item.customDays);
       if (item.emisLeft > 0) item.emisLeft = Math.max(0, item.emisLeft - 1);
-      saveState();
-      renderAll();
-      showToast(`Marked Paid • Next: ${item.nextDate}`);
+      saveState(); renderAll(); showToast(`Marked Paid • Next: ${item.nextDate}`);
     };
 
     window.exportCalendar = function(id) {
       const item = state.items.find(x => x.id === id);
       if (!item) return;
       const dt = item.nextDate.replace(/-/g, '');
-      const ics = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//SubPulse//Bill Guardian//EN',
-        'BEGIN:VEVENT',
-        `DTSTART;VALUE=DATE:${dt}`,
-        `DTEND;VALUE=DATE:${dt}`,
-        `SUMMARY:Renewal: ${item.name} (${fmt(item.amount)})`,
-        `DESCRIPTION:${item.note || 'Tracked by SubPulse'}`,
-        'END:VEVENT',
-        'END:VCALENDAR'
-      ].join('\r\n');
+      const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//SubPulse//Bill Guardian//EN','BEGIN:VEVENT',`DTSTART;VALUE=DATE:${dt}`,`DTEND;VALUE=DATE:${dt}`,`SUMMARY:Renewal: ${item.name} (${fmt(item.amount)})`,`DESCRIPTION:${item.note || 'Tracked by SubPulse'}`,'END:VEVENT','END:VCALENDAR'].join('\r\n');
       downloadFile(`${item.name.replace(/\s+/g, '_')}.ics`, ics, 'text/calendar');
       showToast('Calendar Reminder Downloaded');
     };
 
     window.togglePause = function(id) {
       const item = state.items.find(x => x.id === id);
-      if (item) {
-        item.paused = !item.paused;
-        saveState();
-        renderAll();
-        showToast(item.paused ? 'Paused' : 'Resumed');
-      }
+      if (item) { item.paused = !item.paused; saveState(); renderAll(); showToast(item.paused ? 'Paused' : 'Resumed'); }
     };
 
     window.deleteItem = function(id) {
       state.items = state.items.filter(x => x.id !== id);
       state.simOffIds = state.simOffIds.filter(x => x !== id);
-      saveState();
-      renderAll();
-      showToast('Deleted');
+      saveState(); renderAll(); showToast('Deleted');
     };
 
     window.toggleSim = function(id, keep) {
       const item = state.items.find(x => x.id === id);
       if (item && item.paused && keep) item.paused = false;
-      if (keep) {
-        state.simOffIds = state.simOffIds.filter(x => x !== id);
-      } else if (!state.simOffIds.includes(id)) {
-        state.simOffIds.push(id);
-      }
-      saveState();
-      renderAll();
+      if (keep) state.simOffIds = state.simOffIds.filter(x => x !== id);
+      else if (!state.simOffIds.includes(id)) state.simOffIds.push(id);
+      saveState(); renderAll();
     };
 
     window.openEdit = function(id) {
@@ -1219,19 +1639,196 @@
       document.getElementById('itemModal').classList.add('open');
     }
 
-    function closeItemModal() {
-      document.getElementById('itemModal').classList.remove('open');
+    function openDailyModal() {
+      document.getElementById('dailyForm').reset();
+      document.getElementById('dailyDate').value = addDaysISO(0);
+      document.getElementById('dailyModal').classList.add('open');
     }
 
+    function buildReportHtmlString() {
+      const activeItems = state.items.filter(i => !i.paused);
+      const fixedTotal = activeItems.reduce((sum, i) => sum + toMonthly(i), 0);
+      const dailyTotal = (state.dailyExpenses || []).reduce((sum, d) => sum + (Number(d.amount) || 0), 0);
+      const totalOut = fixedTotal + dailyTotal;
+      const netLeft = (Number(state.monthlyIncome) || 0) - totalOut;
+      const rows = activeItems.map(i => `<tr><td>${escapeHtml(i.name)}</td><td><span style="color:${getCatColor(i.category)};font-weight:700;">${escapeHtml(i.category)}</span></td><td>${fmt(i.amount)}/${cycleShort(i)}</td><td>${i.nextDate}</td></tr>`).join('') || '<tr><td colspan="4">No active bills</td></tr>';
+      const drows = (state.dailyExpenses || []).map(d => `<tr><td>${escapeHtml(d.name)}</td><td>${escapeHtml(d.bucket)}</td><td>${fmt(d.amount)}</td><td>${d.date}</td></tr>`).join('') || '<tr><td colspan="4">No daily expenses logged</td></tr>';
+      return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>SubPulse Colorful Expense Report</title><style>body{font-family:sans-serif;padding:24px;color:#0f172a;background:#f8fafc}h1{color:#059669;margin-bottom:4px}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}.kpi{padding:12px;border-radius:12px;color:#fff;font-weight:700}table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff}th,td{border:1px solid #e2e8f0;padding:9px;text-align:left;font-size:13px}th{background:#0f766e;color:#fff}</style></head><body><h1>SubPulse Colorful Expense Report</h1><p>Generated on ${new Date().toISOString().slice(0,10)}</p><div class="kpis"><div class="kpi" style="background:#059669;">Income<br>${fmt(state.monthlyIncome)}</div><div class="kpi" style="background:#0284c7;">Fixed Bills<br>${fmt(fixedTotal)}</div><div class="kpi" style="background:#7c3aed;">Daily Spend<br>${fmt(dailyTotal)}</div><div class="kpi" style="background:${netLeft>=0?'#10b981':'#ef4444'};">Net Balance<br>${fmt(netLeft)}</div></div><h2>Recurring Bills &amp; EMIs</h2><table><tr><th>Name</th><th>Category</th><th>Amount</th><th>Next Due</th></tr>${rows}</table><h2>Daily Expenses (50/30/20)</h2><table><tr><th>Item</th><th>Bucket</th><th>Amount</th><th>Date</th></tr>${drows}</table></body></html>`;
+    }
+
+    function generatePdfReport() {
+      if (!hasProAccess()) {
+        document.getElementById('proModal').classList.add('open');
+        showToast('Colorful Report is a Pro Feature');
+        return;
+      }
+      const activeItems = state.items.filter(i => !i.paused);
+      const fixedTotal = activeItems.reduce((sum, i) => sum + toMonthly(i), 0);
+      const dailyTotal = (state.dailyExpenses || []).reduce((sum, d) => sum + (Number(d.amount) || 0), 0);
+      const netLeft = (Number(state.monthlyIncome) || 0) - fixedTotal - dailyTotal;
+
+      const catMap = {};
+      activeItems.forEach(i => { catMap[i.category] = (catMap[i.category] || 0) + toMonthly(i); });
+      (state.dailyExpenses || []).forEach(d => { catMap[d.bucket] = (catMap[d.bucket] || 0) + (Number(d.amount) || 0); });
+      const totalSpend = Math.max(1, fixedTotal + dailyTotal);
+      const bars = Object.entries(catMap).sort((a, b) => b[1] - a[1]).map(([cat, val]) => {
+        const pct = Math.round((val / totalSpend) * 100);
+        const col = getCatColor(cat);
+        return `<div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span><strong>${escapeHtml(cat)}</strong></span><span>${fmt(val)} (${pct}%)</span></div><div style="height:8px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;"><div style="width:${pct}%;height:100%;background:${col};"></div></div></div>`;
+      }).join('') || '<div style="font-size:12px;color:var(--muted);">No expenses yet.</div>';
+
+      const dailyRows = (state.dailyExpenses || []).slice(0, 8).map(d =>
+        `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;"><span>${escapeHtml(d.name)} <span style="color:var(--muted);">(${d.bucket})</span></span><strong>${fmt(d.amount)}</strong></div>`
+      ).join('') || '<div style="font-size:12px;color:var(--muted);">No daily entries yet.</div>';
+
+      document.getElementById('reportBody').innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+          <div style="background:linear-gradient(135deg,#059669,#10B981);color:#fff;padding:12px;border-radius:12px;"><div style="font-size:11px;opacity:0.9;">INCOME</div><div style="font-size:18px;font-weight:800;">${fmt(state.monthlyIncome)}</div></div>
+          <div style="background:linear-gradient(135deg,#0284C7,#38BDF8);color:#fff;padding:12px;border-radius:12px;"><div style="font-size:11px;opacity:0.9;">FIXED BILLS</div><div style="font-size:18px;font-weight:800;">${fmt(fixedTotal)}</div></div>
+          <div style="background:linear-gradient(135deg,#7C3AED,#A78BFA);color:#fff;padding:12px;border-radius:12px;"><div style="font-size:11px;opacity:0.9;">DAILY SPENDS</div><div style="font-size:18px;font-weight:800;">${fmt(dailyTotal)}</div></div>
+          <div style="background:linear-gradient(135deg,${netLeft>=0?'#0D9488,#2DD4BF':'#DC2626,#FB7185'});color:#fff;padding:12px;border-radius:12px;"><div style="font-size:11px;opacity:0.9;">NET BALANCE</div><div style="font-size:18px;font-weight:800;">${fmt(netLeft)}</div></div>
+        </div>
+        <div class="card" style="margin-bottom:10px;"><div class="section-title" style="margin-bottom:8px;">Category Breakdown</div>${bars}</div>
+        <div class="card" style="margin-bottom:0;"><div class="section-title" style="margin-bottom:6px;">Recent Daily Entries</div>${dailyRows}</div>
+      `;
+      document.getElementById('reportModal').classList.add('open');
+    }
+
+    // Event Listeners
     document.getElementById('skipSplashBtn').addEventListener('click', hideSplash);
+
+    document.getElementById('parseBillSmsBtn').addEventListener('click', () => {
+      const parsed = parseSmartSms(document.getElementById('smsBillInput').value);
+      if (!parsed || !parsed.amount) { showToast('Paste an SMS with an amount (e.g. Rs 649)'); return; }
+      document.getElementById('subName').value = parsed.merchant;
+      document.getElementById('subAmount').value = parsed.amount;
+      populateCategoryDropdown(parsed.category);
+      showToast('Auto-filled from SMS!');
+    });
+
+    document.getElementById('parseDailySmsBtn').addEventListener('click', () => {
+      const parsed = parseSmartSms(document.getElementById('smsDailyInput').value);
+      if (!parsed || !parsed.amount) { showToast('Paste an SMS with an amount (e.g. Rs 250)'); return; }
+      document.getElementById('dailyName').value = parsed.merchant;
+      document.getElementById('dailyAmount').value = parsed.amount;
+      document.getElementById('dailyBucket').value = parsed.bucket;
+      showToast('Auto-filled from UPI SMS!');
+    });
+
+    document.getElementById('addGoalBtn').addEventListener('click', () => {
+      document.getElementById('goalForm').reset();
+      document.getElementById('goalModal').classList.add('open');
+    });
+    document.getElementById('closeGoalBtn').addEventListener('click', () => document.getElementById('goalModal').classList.remove('open'));
+    document.getElementById('cancelGoalBtn').addEventListener('click', () => document.getElementById('goalModal').classList.remove('open'));
+    document.getElementById('goalForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!Array.isArray(state.goals)) state.goals = [];
+      state.goals.unshift({
+        id: 'g_' + Date.now(),
+        name: document.getElementById('goalName').value.trim(),
+        target: parseFloat(document.getElementById('goalTarget').value) || 1000,
+        saved: parseFloat(document.getElementById('goalSaved').value) || 0
+      });
+      saveState();
+      document.getElementById('goalModal').classList.remove('open');
+      renderGoals();
+      showToast('Savings Goal Created!');
+    });
+
+    document.getElementById('langSelect').addEventListener('change', (e) => {
+      state.lang = e.target.value;
+      saveState(); renderAll(); showToast('Language Updated');
+    });
+
+    document.getElementById('savePinBtn').addEventListener('click', () => {
+      const pin = document.getElementById('pinInput').value.trim();
+      if (!/^\d{4}$/.test(pin)) { showToast('Enter a 4-digit numeric PIN'); return; }
+      state.appPin = pin;
+      document.getElementById('pinInput').value = '';
+      saveState(); renderAll(); showToast('4-Digit PIN Enabled!');
+    });
+
+    document.getElementById('disablePinBtn').addEventListener('click', () => {
+      state.appPin = '';
+      saveState(); renderAll(); showToast('PIN Lock Disabled');
+    });
+
+    let enteredPin = '';
+    function updatePinDots() {
+      document.querySelectorAll('#pinDots .pin-dot').forEach((dot, idx) => {
+        dot.classList.toggle('filled', idx < enteredPin.length);
+      });
+    }
+    document.getElementById('pinPad').addEventListener('click', (e) => {
+      const btn = e.target.closest('.pin-key');
+      if (!btn) return;
+      const k = btn.dataset.k;
+      if (k === 'clr') enteredPin = '';
+      else if (k === 'del') enteredPin = enteredPin.slice(0, -1);
+      else if (enteredPin.length < 4) enteredPin += k;
+      updatePinDots();
+      if (enteredPin.length === 4) {
+        if (enteredPin === state.appPin) {
+          document.getElementById('pinOverlay').classList.remove('open');
+          enteredPin = ''; updatePinDots();
+        } else {
+          document.getElementById('pinHint').textContent = 'Wrong PIN! Try again';
+          enteredPin = ''; updatePinDots();
+        }
+      }
+    });
+
     document.getElementById('addBtnTop').addEventListener('click', openAddModal);
-    document.getElementById('closeModalBtn').addEventListener('click', closeItemModal);
-    document.getElementById('cancelModalBtn').addEventListener('click', closeItemModal);
+    document.getElementById('quickExpenseBtn').addEventListener('click', openDailyModal);
+    document.getElementById('addDailyBtn').addEventListener('click', openDailyModal);
+    document.getElementById('closeModalBtn').addEventListener('click', () => document.getElementById('itemModal').classList.remove('open'));
+    document.getElementById('cancelModalBtn').addEventListener('click', () => document.getElementById('itemModal').classList.remove('open'));
+    document.getElementById('closeDailyBtn').addEventListener('click', () => document.getElementById('dailyModal').classList.remove('open'));
+    document.getElementById('cancelDailyBtn').addEventListener('click', () => document.getElementById('dailyModal').classList.remove('open'));
+    document.getElementById('closeSplitBtn').addEventListener('click', () => document.getElementById('splitModal').classList.remove('open'));
+    document.getElementById('splitPeople').addEventListener('input', updateSplitPreview);
+    document.getElementById('sendWhatsAppBtn').addEventListener('click', () => {
+      if (!activeSplitItem) return;
+      window.open(`https://wa.me/?text=${encodeURIComponent(buildSplitMessage())}`, '_blank');
+    });
+    document.getElementById('copySplitBtn').addEventListener('click', () => {
+      if (!activeSplitItem) return;
+      const msg = buildSplitMessage();
+      try { navigator.clipboard.writeText(msg); } catch (e) {
+        const ta = document.createElement('textarea'); ta.value = msg; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+      }
+      showToast('Split Message Copied!');
+    });
+
+    document.getElementById('editIncomeBtn').addEventListener('click', () => {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('.nav-btn[data-tab="settings"]').classList.add('active');
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-settings').classList.add('active');
+      document.getElementById('incomeInput').focus();
+    });
+
+    document.getElementById('pdfReportBtn').addEventListener('click', generatePdfReport);
+
+    document.getElementById('closeReportBtn').addEventListener('click', () => document.getElementById('reportModal').classList.remove('open'));
+    document.getElementById('downloadReportHtmlBtn').addEventListener('click', () => {
+      downloadFile('subpulse-colorful-report.html', buildReportHtmlString(), 'text/html');
+      showToast('Colorful Report Downloaded!');
+    });
+    document.getElementById('printReportBtn').addEventListener('click', () => {
+      try { window.print(); } catch (e) { showToast('Use Download Report to save'); }
+    });
+
+    document.getElementById('settingsPdfBtn').addEventListener('click', generatePdfReport);
+
+    ['loanPrincipal', 'loanRate', 'loanMonths', 'loanExtra'].forEach(id => {
+      document.getElementById(id).addEventListener('input', calcEmiSaver);
+    });
 
     document.getElementById('subCycle').addEventListener('change', (e) => {
       document.getElementById('customDaysGroup').style.display = e.target.value === 'custom' ? 'block' : 'none';
     });
-
     document.getElementById('subCategory').addEventListener('change', (e) => {
       document.getElementById('customCatGroup').style.display = e.target.value === '__custom__' ? 'block' : 'none';
     });
@@ -1244,6 +1841,29 @@
       document.getElementById('subCycle').value = btn.dataset.cycle || 'monthly';
       document.getElementById('customDaysGroup').style.display = 'none';
       populateCategoryDropdown(btn.dataset.cat);
+    });
+
+    document.getElementById('dailyPresets').addEventListener('click', (e) => {
+      const btn = e.target.closest('.preset-btn');
+      if (!btn) return;
+      document.getElementById('dailyName').value = btn.dataset.dname;
+      document.getElementById('dailyAmount').value = btn.dataset.damt;
+      document.getElementById('dailyBucket').value = btn.dataset.dcat;
+    });
+
+    document.getElementById('dailyForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      state.dailyExpenses.unshift({
+        id: 'd_' + Date.now(),
+        name: document.getElementById('dailyName').value.trim(),
+        amount: parseFloat(document.getElementById('dailyAmount').value) || 0,
+        bucket: document.getElementById('dailyBucket').value,
+        date: document.getElementById('dailyDate').value
+      });
+      saveState();
+      document.getElementById('dailyModal').classList.remove('open');
+      renderAll();
+      showToast('Expense Logged');
     });
 
     document.getElementById('subForm').addEventListener('submit', (e) => {
@@ -1261,9 +1881,7 @@
         id: id || String(Date.now()),
         name: document.getElementById('subName').value.trim(),
         amount: parseFloat(document.getElementById('subAmount').value) || 0,
-        cycle,
-        customDays,
-        category: cat,
+        cycle, customDays, category: cat,
         nextDate: document.getElementById('subDate').value,
         emisLeft: parseInt(document.getElementById('subEmisLeft').value, 10) || 0,
         isTrial: document.getElementById('subTrial').checked,
@@ -1277,7 +1895,7 @@
         state.items.unshift(payload);
       }
       saveState();
-      closeItemModal();
+      document.getElementById('itemModal').classList.remove('open');
       renderAll();
       showToast('Tracker Saved');
     });
@@ -1286,41 +1904,22 @@
       const btn = e.target.closest('.theme-chip');
       if (!btn) return;
       state.theme = btn.dataset.theme;
-      saveState();
-      renderAll();
-      showToast('Theme Updated');
+      saveState(); renderAll(); showToast('Theme Updated');
     });
 
     document.getElementById('simFiveYearCard').addEventListener('click', () => {
-      if (!hasProAccess()) {
-        document.getElementById('proModal').classList.add('open');
-        showToast('5-Year Projection is a Pro Feature');
-      }
+      if (!hasProAccess()) { document.getElementById('proModal').classList.add('open'); showToast('5-Year Projection is a Pro Feature'); }
     });
 
-    document.getElementById('currencySelect').addEventListener('change', (e) => {
-      state.currency = e.target.value;
-      saveState();
-      renderAll();
-    });
-
-    document.getElementById('sortSelect').addEventListener('change', (e) => {
-      state.sortBy = e.target.value;
-      saveState();
-      renderList();
-    });
-
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      state.search = e.target.value;
-      renderList();
-    });
+    document.getElementById('currencySelect').addEventListener('change', (e) => { state.currency = e.target.value; saveState(); renderAll(); });
+    document.getElementById('sortSelect').addEventListener('change', (e) => { state.sortBy = e.target.value; saveState(); renderList(); });
+    document.getElementById('searchInput').addEventListener('input', (e) => { state.search = e.target.value; renderList(); });
 
     document.getElementById('categoryPills').addEventListener('click', (e) => {
       const btn = e.target.closest('.pill');
       if (!btn) return;
       state.filterCat = btn.dataset.cat;
-      renderCategoryPills();
-      renderList();
+      renderCategoryPills(); renderList();
     });
 
     document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -1333,48 +1932,28 @@
       });
     });
 
-    document.getElementById('resetSimBtn').addEventListener('click', () => {
-      state.simOffIds = [];
-      saveState();
-      renderAll();
-      showToast('Simulator Reset');
-    });
-
-    document.getElementById('clearHistoryBtn').addEventListener('click', () => {
-      state.history = [];
-      saveState();
-      renderAll();
-      showToast('Payment Log Cleared');
-    });
+    document.getElementById('resetSimBtn').addEventListener('click', () => { state.simOffIds = []; saveState(); renderAll(); showToast('Simulator Reset'); });
+    document.getElementById('clearHistoryBtn').addEventListener('click', () => { state.history = []; saveState(); renderAll(); showToast('Payment Log Cleared'); });
 
     document.getElementById('saveBudgetBtn').addEventListener('click', () => {
-      const val = parseFloat(document.getElementById('budgetInput').value);
-      if (val > 0) {
-        state.budget = val;
-        saveState();
-        renderAll();
-        showToast('Budget Updated');
-      }
+      const inc = parseFloat(document.getElementById('incomeInput').value);
+      const sav = parseFloat(document.getElementById('savingsGoalInput').value);
+      const bud = parseFloat(document.getElementById('budgetInput').value);
+      if (!isNaN(inc) && inc >= 0) state.monthlyIncome = inc;
+      if (!isNaN(sav) && sav >= 0) state.savingsGoal = sav;
+      if (bud > 0) state.budget = bud;
+      saveState(); renderAll(); showToast('Income & Budget Saved');
     });
 
     document.getElementById('exportCsvBtn').addEventListener('click', () => {
-      if (!hasProAccess()) {
-        document.getElementById('proModal').classList.add('open');
-        showToast('CSV Export is a Pro Feature');
-        return;
-      }
+      if (!hasProAccess()) { document.getElementById('proModal').classList.add('open'); showToast('CSV Export is a Pro Feature'); return; }
       const rows = [['Name', 'Amount', 'Cycle', 'CustomDays', 'Category', 'NextDate', 'Paused', 'Trial', 'EMIsLeft', 'Note']];
       state.items.forEach(i => rows.push([i.name, i.amount, i.cycle, i.customDays || '', i.category, i.nextDate, i.paused, i.isTrial, i.emisLeft, i.note || '']));
-      const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
-      downloadFile('subpulse-export.csv', csv, 'text/csv');
+      downloadFile('subpulse-export.csv', rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n'), 'text/csv');
     });
 
     document.getElementById('exportJsonBtn').addEventListener('click', () => {
-      if (!hasProAccess()) {
-        document.getElementById('proModal').classList.add('open');
-        showToast('JSON Backup is a Pro Feature');
-        return;
-      }
+      if (!hasProAccess()) { document.getElementById('proModal').classList.add('open'); showToast('JSON Backup is a Pro Feature'); return; }
       downloadFile('subpulse-backup.json', JSON.stringify(state, null, 2), 'application/json');
     });
 
@@ -1385,27 +1964,13 @@
       reader.onload = () => {
         try {
           const parsed = JSON.parse(reader.result);
-          if (parsed && Array.isArray(parsed.items)) {
-            state = { ...state, ...parsed };
-            saveState();
-            renderAll();
-            showToast('Backup Restored');
-          }
-        } catch (err) {
-          showToast('Invalid JSON file');
-        }
+          if (parsed && Array.isArray(parsed.items)) { state = { ...state, ...parsed }; saveState(); renderAll(); showToast('Backup Restored'); }
+        } catch (err) { showToast('Invalid JSON file'); }
       };
       reader.readAsText(file);
     });
 
-    function clearAllBills() {
-      state.items = [];
-      state.simOffIds = [];
-      saveState();
-      renderAll();
-      showToast('All Bills Cleared');
-    }
-
+    function clearAllBills() { state.items = []; state.simOffIds = []; saveState(); renderAll(); showToast('All Bills Cleared'); }
     document.getElementById('clearSampleBtn').addEventListener('click', clearAllBills);
     document.getElementById('clearSamplesQuickBtn').addEventListener('click', clearAllBills);
 
@@ -1413,17 +1978,11 @@
       const blob = new Blob([content], { type });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;
-      a.download = name;
-      a.click();
+      a.href = url; a.download = name; a.click();
       URL.revokeObjectURL(url);
     }
 
-    const PLAN_LABELS = {
-      subpulse_pro_monthly: 'Monthly Pro',
-      subpulse_pro_yearly: 'Yearly Pro',
-      subpulse_pro_lifetime: 'Lifetime Guardian'
-    };
+    const PLAN_LABELS = { subpulse_pro_monthly: 'Monthly Pro', subpulse_pro_yearly: 'Yearly Pro', subpulse_pro_lifetime: 'Lifetime Guardian' };
 
     document.getElementById('planGrid').addEventListener('click', (e) => {
       const card = e.target.closest('.plan-card');
@@ -1452,8 +2011,7 @@
           receipt.finish();
           state.isPro = true;
           state.activePlan = PLAN_LABELS[state.selectedPlan] || 'Guardian Pro';
-          saveState();
-          renderAll();
+          saveState(); renderAll();
           document.getElementById('proModal').classList.remove('open');
           showToast('Pro Unlocked via Google Play!');
         });
@@ -1469,29 +2027,13 @@
           const { store, Platform } = CdvPurchase;
           const product = store.get(planId, Platform.GOOGLE_PLAY) || store.get(planId);
           const offer = product && (product.getOffer() || (product.offers && product.offers[0]));
-          if (offer) {
-            offer.order();
-            return;
-          }
-          if (nativeApp) {
-            store.update();
-            showToast('Loading Google Play plan... please try again in a moment');
-            return;
-          }
-        } else if (nativeApp) {
-          showToast('Google Play Billing unavailable. Please update Play Store.');
-          return;
-        }
-      } catch (e) {
-        if (nativeApp) {
-          showToast('Payment error. Please try again.');
-          return;
-        }
-      }
+          if (offer) { offer.order(); return; }
+          if (nativeApp) { store.update(); showToast('Loading Google Play plan... please try again in a moment'); return; }
+        } else if (nativeApp) { showToast('Google Play Billing unavailable. Please update Play Store.'); return; }
+      } catch (e) { if (nativeApp) { showToast('Payment error. Please try again.'); return; } }
       state.isPro = true;
       state.activePlan = PLAN_LABELS[planId] + ' (Preview)';
-      saveState();
-      renderAll();
+      saveState(); renderAll();
       document.getElementById('proModal').classList.remove('open');
       showToast(`${PLAN_LABELS[planId]} Activated!`);
     }
@@ -1514,31 +2056,23 @@
     document.getElementById('modalRestoreBtn').addEventListener('click', restorePlayPurchases);
     document.getElementById('restorePurchasesBtn').addEventListener('click', restorePlayPurchases);
     document.getElementById('expireTrialBtn').addEventListener('click', () => {
-      state.isPro = false;
-      state.trialStartDate = Date.now() - (8 * 86400000);
-      saveState();
-      renderAll();
-      showToast('Trial Expired Mode Active');
+      state.isPro = false; state.trialStartDate = Date.now() - (8 * 86400000);
+      saveState(); renderAll(); showToast('Trial Expired Mode Active');
     });
     document.getElementById('resetFreeBtn').addEventListener('click', () => {
-      state.isPro = false;
-      state.activePlan = null;
-      state.trialStartDate = Date.now();
-      saveState();
-      renderAll();
-      showToast('7-Day Trial Restarted');
+      state.isPro = false; state.activePlan = null; state.trialStartDate = Date.now();
+      saveState(); renderAll(); showToast('7-Day Trial Restarted');
     });
 
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      });
+      window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
     }
 
     document.addEventListener('deviceready', initPlayBilling, false);
     populateCurrencies();
     loadState();
     renderAll();
+    if (state.appPin) document.getElementById('pinOverlay').classList.add('open');
     setTimeout(hideSplash, 1700);
   </script>
 </body>
